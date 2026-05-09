@@ -65,6 +65,15 @@ def create_app():
     def rider_static(filename):
         return send_from_directory('static/rider', filename)
 
+    # 商家管理后台
+    @app.route('/admin/')
+    def admin_index():
+        return send_from_directory('static/admin', 'index.html')
+
+    @app.route('/admin/<path:filename>')
+    def admin_static(filename):
+        return send_from_directory('static/admin', filename)
+
     return app
 
 
