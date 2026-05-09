@@ -1,5 +1,5 @@
 // API配置
-const API_BASE = 'http://127.0.0.1:5000/api';
+const API_BASE = 'https://dayan-garden-production.up.railway.app/api';
 
 // 当前登录用户
 let currentUser = null;
