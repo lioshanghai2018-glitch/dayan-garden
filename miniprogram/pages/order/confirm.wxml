@@ -1,0 +1,62 @@
+<view class="container">
+  <!-- 收货地址 -->
+  <view class="address-section" bindtap="selectAddress">
+    <view class="address-info" wx:if="{{address}}">
+      <view class="address-detail">
+        <text class="address-name">{{address.name}}</text>
+        <text class="address-phone">{{address.phone}}</text>
+      </view>
+      <text class="address-text">{{address.community}}{{address.building}} {{address.room}}</text>
+    </view>
+    <view class="address-empty" wx:else>
+      <text>请选择收货地址</text>
+    </view>
+    <text class="arrow">›</text>
+  </view>
+
+  <!-- 配送时间 -->
+  <view class="delivery-slot card">
+    <text class="section-title">{{deliveryDateDisplay ? deliveryDateDisplay + '送达' : '配送时间'}}</text>
+    <view class="slot-list horizontal" wx:if="{{slots.length > 0}}">
+      <view class="slot-item {{selectedSlot === item.id ? 'active' : ''}}"
+            wx:for="{{slots}}" wx:key="id"
+            bindtap="selectSlot" data-id="{{item.id}}">
+        <text>{{item.name}}</text>
+      </view>
+    </view>
+    <view class="slot-loading" wx:else>
+      <text>加载配送时间...</text>
+    </view>
+  </view>
+
+  <!-- 商品清单 -->
+  <view class="order-items card">
+    <text class="section-title">商品清单</text>
+    <view class="item-row" wx:for="{{items}}" wx:key="id">
+      <image class="item-image" src="{{item.image || '/static/placeholder.png'}}" mode="aspectFill" />
+      <view class="item-info">
+        <text class="item-name">{{item.name}}</text>
+        <text class="item-unit">{{item.unit}}</text>
+      </view>
+      <view class="item-price">
+        <text>¥{{item.price}}</text>
+        <text class="item-qty">x{{item.quantity}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 备注 -->
+  <view class="remark-section card">
+    <text class="section-title">备注</text>
+    <input class="remark-input" placeholder="选填，可备注特殊需求" bindinput="inputRemark" />
+  </view>
+
+  <!-- 底部支付栏 -->
+  <view class="bottom-bar">
+    <view class="total-info">
+      <text class="total-label">合计:</text>
+      <text class="total-price">¥{{totalAmount}}</text>
+    </view>
+    <view class="pay-btn" bindtap="submitOrder">提交订单</view>
+  </view>
+</view>

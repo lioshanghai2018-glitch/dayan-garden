@@ -1,0 +1,54 @@
+<view class="container">
+  <!-- 顶部成功图标 -->
+  <view class="success-header">
+    <text class="success-icon">✓</text>
+    <text class="success-title">下单成功</text>
+  </view>
+
+  <!-- 送达时间提示 -->
+  <view class="delivery-hint" wx:if="{{deliveryTime}}">
+    <text>订单将于 {{deliveryTime}} 送达</text>
+  </view>
+
+  <!-- 订单明细卡片 -->
+  <view class="order-card">
+    <view class="order-info">
+      <view class="info-row">
+        <text class="info-label">订单编号</text>
+        <text class="info-value">{{orderNo}}</text>
+      </view>
+      <view class="info-row" wx:if="{{address}}">
+        <text class="info-label">收货人</text>
+        <text class="info-value">{{address.name}} {{address.phone}}</text>
+      </view>
+      <view class="info-row" wx:if="{{address}}">
+        <text class="info-label">配送地址</text>
+        <text class="info-value">{{address.community}} {{address.building}} {{address.room}}</text>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 商品列表 -->
+    <view class="item-list">
+      <view class="item-row" wx:for="{{items}}" wx:key="index">
+        <text class="item-name">{{item.name}} × {{item.quantity}}</text>
+        <text class="item-price">¥{{item.subtotal}}</text>
+      </view>
+    </view>
+
+    <view class="divider"></view>
+
+    <!-- 合计金额 -->
+    <view class="total-row">
+      <text class="total-label">合计</text>
+      <text class="total-price">¥{{totalAmount}}</text>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-bar">
+    <text class="auto-back" wx:if="{{countdown > 0}}">{{countdown}}秒后自动返回首页</text>
+    <view class="back-btn" bindtap="goHome">返回首页</view>
+  </view>
+</view>

@@ -1,0 +1,46 @@
+<view class="container">
+  <!-- 购物车列表 -->
+  <view class="cart-list" wx:if="{{items.length > 0}}">
+    <view class="cart-item" wx:for="{{items}}" wx:key="id">
+      <view class="cart-check" catchtap="toggleItem" data-id="{{item.id}}">
+        <text class="{{selectedIds.includes(item.id) ? 'checked' : ''}}">✓</text>
+      </view>
+      <image class="cart-image" src="{{item.image || '/static/placeholder.png'}}" mode="aspectFill" />
+      <view class="cart-info">
+        <text class="cart-name">{{item.name}}</text>
+        <text class="cart-unit">{{item.unit}}</text>
+        <view class="cart-bottom">
+          <text class="price">¥{{item.price}}</text>
+          <view class="quantity-control">
+            <text class="qty-btn" catchtap="decreaseQty" data-id="{{item.id}}" data-qty="{{item.quantity}}">-</text>
+            <text class="qty-value">{{item.quantity}}</text>
+            <text class="qty-btn" catchtap="increaseQty" data-id="{{item.id}}" data-qty="{{item.quantity}}" data-stock="{{item.stock}}">+</text>
+          </view>
+        </view>
+      </view>
+      <view class="delete-btn" catchtap="deleteItem" data-id="{{item.id}}">删除</view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:else>
+    <image src="/static/empty-cart.png" mode="aspectFit" />
+    <text>购物车是空的</text>
+    <view class="btn-primary" bindtap="goShopping">去逛逛</view>
+  </view>
+
+  <!-- 底部结算栏 -->
+  <view class="bottom-bar" wx:if="{{items.length > 0}}">
+    <view class="select-all" catchtap="toggleAll">
+      <text class="{{isAllSelected ? 'checked' : ''}}">✓</text>
+      <text>全选</text>
+    </view>
+    <view class="total-info">
+      <text class="total-label">合计:</text>
+      <text class="total-price">¥{{totalPrice}}</text>
+    </view>
+    <view class="checkout-btn {{selectedIds.length > 0 ? '' : 'disabled'}}" catchtap="checkout">
+      去结算 ({{selectedIds.length}})
+    </view>
+  </view>
+</view>

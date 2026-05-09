@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>购物车</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-white flex items-center justify-between px-6 text-sm font-medium">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white px-4 h-14 flex items-center justify-between">
+        <h1 class="text-lg font-bold text-gray-800">购物车</h1>
+        <span class="text-sm text-gray-400">共 3 件商品</span>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-220px)] overflow-y-auto">
+        <!-- Cart Items -->
+        <div class="px-4 py-3 space-y-3">
+            <!-- Item 1 -->
+            <div class="bg-white rounded-xl p-3 flex gap-3">
+                <div class="w-6 flex items-center justify-center">
+                    <div class="w-5 h-5 border-2 border-primary rounded-full flex items-center justify-center">
+                        <div class="w-3 h-3 bg-primary rounded-full"></div>
+                    </div>
+                </div>
+                <div class="w-20 h-20 bg-green-100 rounded-xl flex items-center justify-center text-4xl">
+                    🥬
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <p class="text-sm font-medium text-gray-800">新鲜小白菜</p>
+                        <i class="fas fa-trash-alt text-gray-300 text-sm"></i>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-0.5">500g</p>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥3.99</span>
+                        <div class="flex items-center border border-gray-200 rounded-lg">
+                            <button class="w-7 h-7 flex items-center justify-center text-gray-400">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span class="w-8 text-center text-sm font-medium">2</span>
+                            <button class="w-7 h-7 flex items-center justify-center text-primary">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 2 -->
+            <div class="bg-white rounded-xl p-3 flex gap-3">
+                <div class="w-6 flex items-center justify-center">
+                    <div class="w-5 h-5 border-2 border-primary rounded-full flex items-center justify-center">
+                        <div class="w-3 h-3 bg-primary rounded-full"></div>
+                    </div>
+                </div>
+                <div class="w-20 h-20 bg-red-100 rounded-xl flex items-center justify-center text-4xl">
+                    🍅
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <p class="text-sm font-medium text-gray-800">有机西红柿</p>
+                        <i class="fas fa-trash-alt text-gray-300 text-sm"></i>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-0.5">500g</p>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥4.99</span>
+                        <div class="flex items-center border border-gray-200 rounded-lg">
+                            <button class="w-7 h-7 flex items-center justify-center text-gray-400">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span class="w-8 text-center text-sm font-medium">1</span>
+                            <button class="w-7 h-7 flex items-center justify-center text-primary">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item 3 -->
+            <div class="bg-white rounded-xl p-3 flex gap-3">
+                <div class="w-6 flex items-center justify-center">
+                    <div class="w-5 h-5 border-2 border-primary rounded-full flex items-center justify-center">
+                        <div class="w-3 h-3 bg-primary rounded-full"></div>
+                    </div>
+                </div>
+                <div class="w-20 h-20 bg-orange-100 rounded-xl flex items-center justify-center text-4xl">
+                    🥕
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between">
+                        <p class="text-sm font-medium text-gray-800">新鲜胡萝卜</p>
+                        <i class="fas fa-trash-alt text-gray-300 text-sm"></i>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-0.5">500g</p>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥2.99</span>
+                        <div class="flex items-center border border-gray-200 rounded-lg">
+                            <button class="w-7 h-7 flex items-center justify-center text-gray-400">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span class="w-8 text-center text-sm font-medium">1</span>
+                            <button class="w-7 h-7 flex items-center justify-center text-primary">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Coupon -->
+        <div class="mx-4 bg-white rounded-xl p-3 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-ticket-alt text-secondary text-lg"></i>
+                <span class="text-sm text-gray-700">优惠券</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-secondary">满29减5 已领取</span>
+                <i class="fas fa-chevron-right text-gray-300 text-xs"></i>
+            </div>
+        </div>
+
+        <!-- Notice -->
+        <div class="mx-4 mt-3 p-3 bg-primary/5 rounded-xl">
+            <div class="flex items-start gap-2">
+                <i class="fas fa-truck text-primary mt-0.5"></i>
+                <div class="text-xs text-gray-600">
+                    <p>配送说明：每日 21:00 前下单，当日配送；21:00 后下单，次日配送</p>
+                    <p class="mt-1">配送时间：上午 8:00-12:00 | 下午 14:00-18:00 | 晚间 18:00-21:00</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3">
+        <!-- All Select -->
+        <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2">
+                <div class="w-5 h-5 border-2 border-primary rounded-full flex items-center justify-center">
+                    <div class="w-3 h-3 bg-primary rounded-full"></div>
+                </div>
+                <span class="text-sm text-gray-600">全选</span>
+            </div>
+            <div class="text-xs text-gray-400">共节省 ¥5.00</div>
+        </div>
+
+        <!-- Price & Button -->
+        <div class="flex items-center justify-between">
+            <div>
+                <span class="text-sm text-gray-500">合计：</span>
+                <span class="text-secondary font-bold text-xl">¥15.96</span>
+            </div>
+            <button class="h-11 bg-primary text-white rounded-full px-8 font-medium">
+                去结算
+            </button>
+        </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="absolute bottom-20 left-0 right-0 bg-white border-t border-gray-100 h-14 flex items-center pt-0">
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs">首页</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-th-large text-xl"></i>
+            <span class="text-xs">分类</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-primary relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-xs">购物车</span>
+            <div class="absolute -top-0.5 right-6 bg-secondary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</div>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-file-alt text-xl"></i>
+            <span class="text-xs">订单</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs">我的</span>
+        </div>
+    </div>
+</body>
+</html>

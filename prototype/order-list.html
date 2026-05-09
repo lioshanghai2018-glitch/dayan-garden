@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单列表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .tab-item.active { color: #2D8C4E; border-bottom: 2px solid #2D8C4E; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-white flex items-center justify-between px-6 text-sm font-medium">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white px-4 h-14 flex items-center justify-between">
+        <i class="fas fa-chevron-left text-gray-600"></i>
+        <h1 class="text-lg font-bold text-gray-800">我的订单</h1>
+        <i class="fas fa-search text-gray-400"></i>
+    </div>
+
+    <!-- Tabs -->
+    <div class="bg-white border-b border-gray-100">
+        <div class="flex">
+            <div class="flex-1 py-3 text-center text-sm font-medium tab-item active">全部</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium tab-item text-gray-400">待支付</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium tab-item text-gray-400">待接单</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium tab-item text-gray-400">配送中</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium tab-item text-gray-400">已完成</div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-168px)] overflow-y-auto">
+        <!-- Order Card 1 - Delivering -->
+        <div class="mx-4 mt-4 bg-white rounded-xl overflow-hidden">
+            <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-lg">👨‍🌾</div>
+                    <span class="text-sm font-medium text-gray-800">大研本地农场</span>
+                </div>
+                <span class="text-sm text-primary font-medium">配送中</span>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center text-3xl">🥬</div>
+                    <div class="w-16 h-16 bg-red-100 rounded-lg flex items-center justify-center text-3xl">🍅</div>
+                    <div class="w-16 h-16 bg-orange-100 rounded-lg flex items-center justify-center text-3xl">🥕</div>
+                    <div class="flex-1 text-right">
+                        <p class="text-xs text-gray-400">共3件商品</p>
+                    </div>
+                </div>
+            </div>
+            <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-sm text-gray-500">订单号：NX20260509001</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-500">实付</span>
+                    <span class="text-secondary font-bold">¥10.96</span>
+                </div>
+            </div>
+            <div class="px-4 py-3 bg-gray-50 flex items-center justify-between">
+                <div class="flex items-center gap-1 text-xs text-primary">
+                    <i class="fas fa-truck"></i>
+                    <span>骑手张三正在配送中</span>
+                </div>
+                <button class="px-4 py-1.5 border border-primary text-primary text-xs rounded-full">查看配送</button>
+            </div>
+        </div>
+
+        <!-- Order Card 2 - Pending -->
+        <div class="mx-4 mt-4 bg-white rounded-xl overflow-hidden">
+            <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-lg">👨‍🌾</div>
+                    <span class="text-sm font-medium text-gray-800">大研本地农场</span>
+                </div>
+                <span class="text-sm text-accent font-medium">待接单</span>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-lg flex items-center justify-center text-3xl">🍄</div>
+                    <div class="w-16 h-16 bg-purple-100 rounded-lg flex items-center justify-center text-3xl">🫘</div>
+                    <div class="flex-1 text-right">
+                        <p class="text-xs text-gray-400">共2件商品</p>
+                    </div>
+                </div>
+            </div>
+            <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-sm text-gray-500">订单号：NX20260509002</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-500">实付</span>
+                    <span class="text-secondary font-bold">¥18.98</span>
+                </div>
+            </div>
+            <div class="px-4 py-3 bg-gray-50 flex items-center justify-between">
+                <span class="text-xs text-gray-400">下单时间：05-09 14:30</span>
+                <div class="flex gap-2">
+                    <button class="px-4 py-1.5 border border-gray-300 text-gray-600 text-xs rounded-full">取消</button>
+                    <button class="px-4 py-1.5 bg-primary text-white text-xs rounded-full">联系商家</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Card 3 - Completed -->
+        <div class="mx-4 mt-4 bg-white rounded-xl overflow-hidden">
+            <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-lg">👨‍🌾</div>
+                    <span class="text-sm font-medium text-gray-800">大研本地农场</span>
+                </div>
+                <span class="text-sm text-gray-400 font-medium">已完成</span>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-16 h-16 bg-green-100 rounded-lg flex items-center justify-center text-3xl">🥬</div>
+                    <div class="flex-1 text-right">
+                        <p class="text-xs text-gray-400">共1件商品</p>
+                    </div>
+                </div>
+            </div>
+            <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+                <span class="text-sm text-gray-500">订单号：NX20260508001</span>
+                <div class="flex items-center gap-2">
+                    <span class="text-sm text-gray-500">实付</span>
+                    <span class="text-secondary font-bold">¥3.99</span>
+                </div>
+            </div>
+            <div class="px-4 py-3 bg-gray-50 flex items-center justify-between">
+                <span class="text-xs text-gray-400">完成时间：05-08 10:30</span>
+                <div class="flex gap-2">
+                    <button class="px-4 py-1.5 border border-gray-300 text-gray-600 text-xs rounded-full">再次购买</button>
+                    <button class="px-4 py-1.5 border border-primary text-primary text-xs rounded-full">去评价</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-20"></div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 h-20 flex items-start pt-1">
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs">首页</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-th-large text-xl"></i>
+            <span class="text-xs">分类</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400 relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-xs">购物车</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-primary">
+            <i class="fas fa-file-alt text-xl"></i>
+            <span class="text-xs">订单</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs">我的</span>
+        </div>
+    </div>
+</body>
+</html>

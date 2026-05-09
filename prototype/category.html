@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分类页</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .category-item.active { background: #E8F5E9; color: #2D8C4E; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-white flex items-center justify-between px-6 text-sm font-medium">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-primary px-4 pt-2 pb-3">
+        <div class="flex items-center gap-3">
+            <div class="flex-1 bg-white/20 rounded-full px-4 py-2 flex items-center gap-2">
+                <i class="fas fa-search text-white/70"></i>
+                <span class="text-white/70 text-sm">搜索蔬菜水果</span>
+            </div>
+            <i class="fas fa-comment-dots text-white text-xl"></i>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="flex h-[calc(100%-120px)]">
+        <!-- Left Categories -->
+        <div class="w-24 bg-gray-100 overflow-y-auto hide-scrollbar">
+            <div class="category-item active py-4 px-2 text-center text-sm border-l-4 border-primary">
+                全部
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                叶菜类
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                根茎类
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                瓜果类
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                菌菇类
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                豆制品
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                调味品
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                肉蛋类
+            </div>
+            <div class="category-item py-4 px-2 text-center text-sm text-gray-600">
+                粮油调味
+            </div>
+        </div>
+
+        <!-- Right Products -->
+        <div class="flex-1 bg-white overflow-y-auto hide-scrollbar p-3">
+            <!-- Category Title -->
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-bold text-gray-800">叶菜类</h3>
+                <span class="text-xs text-gray-400">共 24 件商品</span>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="grid grid-cols-2 gap-2">
+                <!-- Product 1 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                    <div class="h-28 bg-green-100 flex items-center justify-center text-5xl relative">
+                        🥬
+                        <div class="absolute top-1.5 left-1.5 bg-secondary text-white text-xs px-1.5 py-0.5 rounded">新鲜</div>
+                    </div>
+                    <div class="p-2">
+                        <p class="text-xs font-medium text-gray-800 line-clamp-2">新鲜小白菜 500g</p>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div>
+                                <span class="text-secondary font-bold text-sm">¥3.99</span>
+                            </div>
+                            <button class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 2 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                    <div class="h-28 bg-green-200 flex items-center justify-center text-5xl relative">
+                        🥗
+                        <div class="absolute top-1.5 left-1.5 bg-accent text-white text-xs px-1.5 py-0.5 rounded">热卖</div>
+                    </div>
+                    <div class="p-2">
+                        <p class="text-xs font-medium text-gray-800 line-clamp-2">新鲜菠菜 500g</p>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div>
+                                <span class="text-secondary font-bold text-sm">¥4.99</span>
+                            </div>
+                            <button class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 3 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                    <div class="h-28 bg-green-100 flex items-center justify-center text-5xl relative">
+                        🥬
+                    </div>
+                    <div class="p-2">
+                        <p class="text-xs font-medium text-gray-800 line-clamp-2">生菜 500g</p>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div>
+                                <span class="text-secondary font-bold text-sm">¥3.49</span>
+                            </div>
+                            <button class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 4 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                    <div class="h-28 bg-green-200 flex items-center justify-center text-5xl relative">
+                        🥬
+                    </div>
+                    <div class="p-2">
+                        <p class="text-xs font-medium text-gray-800 line-clamp-2">空心菜 500g</p>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div>
+                                <span class="text-secondary font-bold text-sm">¥4.29</span>
+                            </div>
+                            <button class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 5 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                    <div class="h-28 bg-green-100 flex items-center justify-center text-5xl relative">
+                        🌿
+                    </div>
+                    <div class="p-2">
+                        <p class="text-xs font-medium text-gray-800 line-clamp-2">韭菜 500g</p>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div>
+                                <span class="text-secondary font-bold text-sm">¥5.99</span>
+                            </div>
+                            <button class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Product 6 -->
+                <div class="bg-gray-50 rounded-xl overflow-hidden">
+                    <div class="h-28 bg-green-200 flex items-center justify-center text-5xl relative">
+                        🥬
+                    </div>
+                    <div class="p-2">
+                        <p class="text-xs font-medium text-gray-800 line-clamp-2">油麦菜 500g</p>
+                        <div class="flex items-center justify-between mt-1.5">
+                            <div>
+                                <span class="text-secondary font-bold text-sm">¥4.49</span>
+                            </div>
+                            <button class="w-6 h-6 bg-primary text-white rounded-full flex items-center justify-center">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="h-20"></div>
+        </div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 h-20 flex items-start pt-1">
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs">首页</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-primary">
+            <i class="fas fa-th-large text-xl"></i>
+            <span class="text-xs">分类</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400 relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-xs">购物车</span>
+            <div class="absolute -top-0.5 right-6 bg-secondary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</div>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-file-alt text-xl"></i>
+            <span class="text-xs">订单</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs">我的</span>
+        </div>
+    </div>
+</body>
+</html>

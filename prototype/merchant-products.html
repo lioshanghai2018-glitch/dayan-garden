@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-primary to-green-400 px-4 py-4">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-leaf text-white text-lg"></i>
+                </div>
+                <div>
+                    <p class="text-white font-bold">象山鲜送</p>
+                    <p class="text-white/70 text-xs">商家后台</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <i class="fas fa-bell text-white text-lg relative">
+                    <span class="absolute -top-1 -right-1 bg-secondary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">3</span>
+                </i>
+                <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-user text-primary text-sm"></i>
+                </div>
+            </div>
+        </div>
+        <div class="text-white/80 text-sm">商品管理</div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="px-4 py-3 bg-white">
+        <div class="flex gap-2">
+            <div class="flex-1 h-10 bg-gray-100 rounded-lg px-3 flex items-center gap-2">
+                <i class="fas fa-search text-gray-400 text-sm"></i>
+                <input type="text" placeholder="搜索商品名称" class="bg-transparent text-sm flex-1 outline-none">
+            </div>
+            <button class="h-10 px-4 bg-primary text-white rounded-lg text-sm">添加</button>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="bg-white border-b border-gray-100">
+        <div class="flex px-4">
+            <div class="flex-1 py-3 text-center text-sm font-medium text-primary border-b-2 border-primary">全部</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium text-gray-400">上架中</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium text-gray-400">已下架</div>
+            <div class="flex-1 py-3 text-center text-sm font-medium text-gray-400">库存预警</div>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-180px)] overflow-y-auto">
+        <!-- Product 1 -->
+        <div class="mx-4 mt-4 bg-white rounded-xl p-4">
+            <div class="flex gap-3">
+                <div class="w-20 h-20 bg-green-100 rounded-lg flex items-center justify-center text-3xl">🥬</div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-medium text-gray-800">新鲜小白菜</p>
+                            <p class="text-xs text-gray-400 mt-1">库存：50kg | 销量：128</p>
+                        </div>
+                        <span class="bg-green-100 text-primary text-xs px-2 py-0.5 rounded">上架中</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥3.99/kg</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-400">预警：20kg</span>
+                            <div class="flex items-center gap-1">
+                                <button class="w-6 h-6 bg-gray-100 rounded text-gray-500"><i class="fas fa-edit text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 2 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex gap-3">
+                <div class="w-20 h-20 bg-red-100 rounded-lg flex items-center justify-center text-3xl">🍅</div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-medium text-gray-800">有机西红柿</p>
+                            <p class="text-xs text-gray-400 mt-1">库存：15kg | 销量：89</p>
+                        </div>
+                        <span class="bg-orange-100 text-orange-500 text-xs px-2 py-0.5 rounded">库存不足</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥4.99/kg</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-red-500">⚠ 低于预警</span>
+                            <div class="flex items-center gap-1">
+                                <button class="w-6 h-6 bg-gray-100 rounded text-gray-500"><i class="fas fa-edit text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 3 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex gap-3">
+                <div class="w-20 h-20 bg-orange-100 rounded-lg flex items-center justify-center text-3xl">🥕</div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-medium text-gray-800">新鲜胡萝卜</p>
+                            <p class="text-xs text-gray-400 mt-1">库存：80kg | 销量：156</p>
+                        </div>
+                        <span class="bg-green-100 text-primary text-xs px-2 py-0.5 rounded">上架中</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥2.99/kg</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-400">预警：30kg</span>
+                            <div class="flex items-center gap-1">
+                                <button class="w-6 h-6 bg-gray-100 rounded text-gray-500"><i class="fas fa-edit text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 4 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex gap-3">
+                <div class="w-20 h-20 bg-purple-100 rounded-lg flex items-center justify-center text-3xl">🍆</div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-medium text-gray-800">新鲜茄子</p>
+                            <p class="text-xs text-gray-400 mt-1">库存：0kg | 销量：65</p>
+                        </div>
+                        <span class="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded">已下架</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥5.99/kg</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-400">无库存</span>
+                            <div class="flex items-center gap-1">
+                                <button class="w-6 h-6 bg-gray-100 rounded text-gray-500"><i class="fas fa-edit text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 5 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex gap-3">
+                <div class="w-20 h-20 bg-yellow-100 rounded-lg flex items-center justify-center text-3xl">🌽</div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-medium text-gray-800">新鲜玉米</p>
+                            <p class="text-xs text-gray-400 mt-1">库存：100kg | 销量：203</p>
+                        </div>
+                        <span class="bg-green-100 text-primary text-xs px-2 py-0.5 rounded">上架中</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥3.49/kg</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-400">预警：40kg</span>
+                            <div class="flex items-center gap-1">
+                                <button class="w-6 h-6 bg-gray-100 rounded text-gray-500"><i class="fas fa-edit text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product 6 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4 mb-4">
+            <div class="flex gap-3">
+                <div class="w-20 h-20 bg-blue-100 rounded-lg flex items-center justify-center text-3xl">🥦</div>
+                <div class="flex-1">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <p class="font-medium text-gray-800">新鲜西兰花</p>
+                            <p class="text-xs text-gray-400 mt-1">库存：45kg | 销量：98</p>
+                        </div>
+                        <span class="bg-green-100 text-primary text-xs px-2 py-0.5 rounded">上架中</span>
+                    </div>
+                    <div class="flex items-center justify-between mt-2">
+                        <span class="text-secondary font-bold">¥6.99/kg</span>
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs text-gray-400">预警：25kg</span>
+                            <div class="flex items-center gap-1">
+                                <button class="w-6 h-6 bg-gray-100 rounded text-gray-500"><i class="fas fa-edit text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 h-16 flex items-center">
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs">首页</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-primary">
+            <i class="fas fa-box text-xl"></i>
+            <span class="text-xs">商品</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-file-alt text-xl"></i>
+            <span class="text-xs">订单</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-chart-bar text-xl"></i>
+            <span class="text-xs">统计</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-cog text-xl"></i>
+            <span class="text-xs">设置</span>
+        </div>
+    </div>
+</body>
+</html>

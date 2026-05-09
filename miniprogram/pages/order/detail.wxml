@@ -1,0 +1,80 @@
+<view class="container">
+  <!-- 订单状态区 -->
+  <view class="status-section">
+    <text class="status-text {{statusColor}}">{{statusText}}</text>
+    <text class="status-hint">{{statusHint}}</text>
+  </view>
+
+  <!-- 配送信息卡片 -->
+  <view class="order-card">
+    <view class="card-title">配送信息</view>
+    <view class="info-row" wx:if="{{deliveryTime}}">
+      <text class="info-label">配送时段</text>
+      <text class="info-value">{{deliveryTime}}</text>
+    </view>
+    <view class="info-row" wx:if="{{address}}">
+      <text class="info-label">收货人</text>
+      <text class="info-value">{{address.name}} {{address.phone}}</text>
+    </view>
+    <view class="info-row" wx:if="{{address}}">
+      <text class="info-label">配送地址</text>
+      <text class="info-value">{{address.community}} {{address.building}} {{address.room}}</text>
+    </view>
+  </view>
+
+  <!-- 商品明细卡片 -->
+  <view class="order-card">
+    <view class="card-title">商品明细</view>
+    <view class="item-list">
+      <view class="item-row" wx:for="{{items}}" wx:key="index">
+        <text class="item-name">{{item.name}} × {{item.quantity}}</text>
+        <text class="item-price">¥{{item.subtotal}}</text>
+      </view>
+    </view>
+    <view class="divider"></view>
+    <view class="total-row">
+      <text class="total-label">合计</text>
+      <text class="total-price">¥{{totalAmount}}</text>
+    </view>
+  </view>
+
+  <!-- 订单信息卡片 -->
+  <view class="order-card">
+    <view class="card-title">订单信息</view>
+    <view class="info-row">
+      <text class="info-label">订单编号</text>
+      <text class="info-value">{{orderNo}}</text>
+    </view>
+    <view class="info-row" wx:if="{{createdAt}}">
+      <text class="info-label">下单时间</text>
+      <text class="info-value">{{createdAt}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">支付方式</text>
+      <text class="info-value">货到付款</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="{{showActions}}">
+    <!-- 待支付：可取消、可支付 -->
+    <view class="action-btn secondary" wx:if="{{status === 0}}" bindtap="cancelOrder">取消订单</view>
+    <view class="action-btn primary" wx:if="{{status === 0}}" bindtap="payOrder">去支付</view>
+
+    <!-- 待接单：可取消 -->
+    <view class="action-btn secondary" wx:if="{{status === 1}}" bindtap="cancelOrder">取消订单</view>
+
+    <!-- 已接单：不可取消，可申请退款 -->
+    <view class="action-btn outline" wx:if="{{status === 2}}" bindtap="applyRefund">申请退款</view>
+
+    <!-- 配送中：可申请退款 -->
+    <view class="action-btn outline" wx:if="{{status === 4}}" bindtap="applyRefund">申请退款</view>
+    <view class="action-btn outline" wx:if="{{status === 4}}" bindtap="callRider">联系骑手</view>
+
+    <!-- 已完成：可申请退款 -->
+    <view class="action-btn outline" wx:if="{{status === 6}}" bindtap="applyRefund">申请退款</view>
+
+    <!-- 已取消/已退款：显示再来一单 -->
+    <view class="action-btn primary" wx:if="{{status === 7 || status === 9}}" bindtap="reOrder">再来一单</view>
+  </view>
+</view>

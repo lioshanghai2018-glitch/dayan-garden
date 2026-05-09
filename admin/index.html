@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>大研菜园 - 商家管理后台</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 登录页 -->
+    <div class="login-page" id="loginPage">
+      <div class="login-box">
+        <h1 class="login-title">大研菜园</h1>
+        <p class="login-subtitle">商家管理后台</p>
+        <form class="login-form" onsubmit="return handleLogin(event)">
+          <input type="text" id="username" placeholder="用户名" required>
+          <input type="password" id="password" placeholder="密码" required>
+          <button type="submit" class="btn-primary">登录</button>
+        </form>
+        <p class="login-hint">演示账号: admin / admin123</p>
+      </div>
+    </div>
+
+    <!-- 管理后台 -->
+    <div class="admin-page hidden" id="adminPage">
+      <!-- 侧边栏 -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <h2>大研菜园</h2>
+          <p>商家管理后台</p>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-page="dashboard">
+            <span class="nav-icon">📊</span>数据看板
+          </a>
+          <a href="#" class="nav-item" data-page="products">
+            <span class="nav-icon">🛒</span>商品管理
+          </a>
+          <a href="#" class="nav-item" data-page="orders">
+            <span class="nav-icon">📋</span>订单管理
+          </a>
+          <a href="#" class="nav-item" data-page="riders">
+            <span class="nav-icon">🚴</span>骑手管理
+          </a>
+          <a href="#" class="nav-item" data-page="categories">
+            <span class="nav-icon">📂</span>分类管理
+          </a>
+          <a href="#" class="nav-item" data-page="banners">
+            <span class="nav-icon">🎠</span>轮播图管理
+          </a>
+          <a href="#" class="nav-item" data-page="settings">
+            <span class="nav-icon">⚙️</span>系统设置
+          </a>
+        </nav>
+        <div class="sidebar-footer">
+          <a href="#" onclick="logout()">退出登录</a>
+        </div>
+      </div>
+
+      <!-- 主内容区 -->
+      <div class="main-content">
+        <!-- 数据看板 -->
+        <div class="page" id="page-dashboard">
+          <div class="page-header">
+            <h1>数据看板</h1>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon green">📦</div>
+              <div class="stat-info">
+                <div class="stat-value" id="todayOrders">0</div>
+                <div class="stat-label">今日订单</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon orange">💰</div>
+              <div class="stat-info">
+                <div class="stat-value" id="todayAmount">¥0</div>
+                <div class="stat-label">今日收入</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon blue">📋</div>
+              <div class="stat-info">
+                <div class="stat-value" id="pendingOrders">0</div>
+                <div class="stat-label">待处理订单</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon purple">👥</div>
+              <div class="stat-info">
+                <div class="stat-value" id="totalCustomers">0</div>
+                <div class="stat-label">注册用户</div>
+              </div>
+            </div>
+          </div>
+          <!-- 图表区域 -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px">
+            <!-- 近7天订单趋势 -->
+            <div class="chart-card">
+              <h3 style="margin-bottom:16px">近7天订单趋势</h3>
+              <div class="bar-chart" id="orderChart"></div>
+            </div>
+            <!-- 热销商品TOP5 -->
+            <div class="chart-card">
+              <h3 style="margin-bottom:16px">热销商品TOP5</h3>
+              <div class="top-products" id="topProducts"></div>
+            </div>
+          </div>
+          <!-- 待处理订单快捷入口 -->
+          <div class="pending-orders-card" onclick="switchPage('orders')" style="cursor:pointer;margin-top:16px">
+            <div class="pending-icon">📋</div>
+            <div class="pending-info">
+              <div class="pending-count" id="pendingOrdersQuick">0</div>
+              <div class="pending-label">待处理订单</div>
+            </div>
+            <div class="pending-arrow">›</div>
+          </div>
+        </div>
+
+        <!-- 商品管理 -->
+        <div class="page hidden" id="page-products">
+          <div class="page-header">
+            <h1>商品管理</h1>
+            <button class="btn-primary" onclick="showProductModal()">添加商品</button>
+          </div>
+          <div class="filter-bar">
+            <select id="productCategoryFilter" onchange="loadProducts()">
+              <option value="">全部分类</option>
+            </select>
+            <select id="productStatusFilter" onchange="loadProducts()">
+              <option value="">全部状态</option>
+              <option value="1">上架</option>
+              <option value="0">下架</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>商品名称</th>
+                <th>分类</th>
+                <th>价格</th>
+                <th>库存</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="productTableBody"></tbody>
+          </table>
+          <div class="pagination" id="productPagination"></div>
+        </div>
+
+        <!-- 订单管理 -->
+        <div class="page hidden" id="page-orders">
+          <div class="page-header">
+            <h1>订单管理</h1>
+          </div>
+          <div class="filter-bar">
+            <select id="orderStatusFilter" onchange="loadOrders()">
+              <option value="">全部状态</option>
+              <option value="0">待支付</option>
+              <option value="1">待接单</option>
+              <option value="2">已接单</option>
+              <option value="3">待取货</option>
+              <option value="4">配送中</option>
+              <option value="6">已完成</option>
+              <option value="7">已取消</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>订单号</th>
+                <th>用户</th>
+                <th>金额</th>
+                <th>状态</th>
+                <th>时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="orderTableBody"></tbody>
+          </table>
+          <div class="pagination" id="orderPagination"></div>
+        </div>
+
+        <!-- 骑手管理 -->
+        <div class="page hidden" id="page-riders">
+          <div class="page-header">
+            <h1>骑手管理</h1>
+            <button class="btn-primary" onclick="showAddRiderModal()">添加骑手</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>姓名</th>
+                <th>手机号</th>
+                <th>今日配送</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="riderTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- 分类管理 -->
+        <div class="page hidden" id="page-categories">
+          <div class="page-header">
+            <h1>分类管理</h1>
+            <button class="btn-primary" onclick="showCategoryModal()">添加分类</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>排序</th>
+                <th>分类名称</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="categoryTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- 轮播图管理 -->
+        <div class="page hidden" id="page-banners">
+          <div class="page-header">
+            <h1>轮播图管理</h1>
+            <button class="btn-primary" onclick="showBannerModal()">添加轮播图</button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>标题</th>
+                <th>图片</th>
+                <th>排序</th>
+                <th>状态</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="bannerTableBody"></tbody>
+          </table>
+        </div>
+
+        <!-- 系统设置 -->
+        <div class="page hidden" id="page-settings">
+          <div class="page-header">
+            <h1>系统设置</h1>
+          </div>
+          <div class="settings-card">
+            <h3>配送时间段设置</h3>
+            <div id="deliverySlotsList"></div>
+            <button class="btn-primary" onclick="showSlotModal()">添加时间段</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 配送时间段弹窗 -->
+    <div class="modal hidden" id="slotModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="slotModalTitle">添加时间段</h3>
+          <span class="modal-close" onclick="closeModal('slotModal')">×</span>
+        </div>
+        <form class="modal-form" onsubmit="return saveSlot(event)">
+          <input type="hidden" id="slotId">
+          <div class="form-row">
+            <label>时间段名称</label>
+            <input type="text" id="slotName" placeholder="如: 上午" required>
+          </div>
+          <div class="form-row">
+            <label>开始时间</label>
+            <input type="time" id="slotStartTime" required>
+          </div>
+          <div class="form-row">
+            <label>结束时间</label>
+            <input type="time" id="slotEndTime" required>
+          </div>
+          <div class="form-row">
+            <label>最大接单数</label>
+            <input type="number" id="slotMaxOrders" value="50">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-danger" id="slotDeleteBtn" onclick="deleteSlot()" style="display:none;float:left">删除</button>
+            <button type="button" class="btn-secondary" onclick="closeModal('slotModal')">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 骑手管理弹窗 -->
+    <div class="modal hidden" id="riderModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="riderModalTitle">添加骑手</h3>
+          <span class="modal-close" onclick="closeModal('riderModal')">×</span>
+        </div>
+        <form class="modal-form" onsubmit="return saveRider(event)">
+          <input type="hidden" id="riderId">
+          <div class="form-row">
+            <label>姓名</label>
+            <input type="text" id="riderName" required>
+          </div>
+          <div class="form-row">
+            <label>手机号</label>
+            <input type="text" id="riderPhone" required>
+          </div>
+          <div class="form-row">
+            <label>登录密码</label>
+            <input type="password" id="riderPassword" placeholder="默认 rider123">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-danger" id="riderDeleteBtn" onclick="deleteRider()" style="display:none;float:left">删除</button>
+            <button type="button" class="btn-secondary" onclick="closeModal('riderModal')">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 商品弹窗 -->
+    <div class="modal hidden" id="productModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="productModalTitle">添加商品</h3>
+          <span class="modal-close" onclick="closeModal('productModal')">×</span>
+        </div>
+        <form class="modal-form" onsubmit="return saveProduct(event)">
+          <input type="hidden" id="productId">
+          <div class="form-row">
+            <label>商品名称</label>
+            <input type="text" id="productName" required>
+          </div>
+          <div class="form-row">
+            <label>分类</label>
+            <select id="productCategory"></select>
+          </div>
+          <div class="form-row">
+            <label>价格</label>
+            <input type="number" id="productPrice" step="0.01" required>
+          </div>
+          <div class="form-row">
+            <label>原价（划线）</label>
+            <input type="number" id="productOriginalPrice" step="0.01">
+          </div>
+          <div class="form-row">
+            <label>单位</label>
+            <input type="text" id="productUnit" placeholder="如: 500g" required>
+          </div>
+          <div class="form-row">
+            <label>库存</label>
+            <input type="number" id="productStock" required>
+          </div>
+          <div class="form-row">
+            <label>副标题</label>
+            <input type="text" id="productSubtitle">
+          </div>
+          <div class="form-row">
+            <label>标签（逗号分隔）</label>
+            <input type="text" id="productTags" placeholder="新鲜,有机">
+          </div>
+          <div class="form-row">
+            <label>图片</label>
+            <div class="upload-area" id="productImageUpload" onclick="document.getElementById('productImageInput').click()">
+              <div class="upload-placeholder" id="productImagePlaceholder">
+                <span>点击上传图片</span>
+                <small>支持拖拽</small>
+              </div>
+              <img id="productImagePreview" class="upload-preview hidden" src="">
+            </div>
+            <input type="file" id="productImageInput" class="hidden" accept="image/*" onchange="handleImageUpload(this, 'productImage')">
+            <input type="hidden" id="productImage">
+          </div>
+          <div class="form-row">
+            <label>描述</label>
+            <textarea id="productDescription" rows="3"></textarea>
+          </div>
+          <div class="form-row">
+            <label>状态</label>
+            <select id="productStatus">
+              <option value="1">上架</option>
+              <option value="0">下架</option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeModal('productModal')">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 订单详情弹窗 -->
+    <div class="modal hidden" id="orderDetailModal">
+      <div class="modal-content modal-lg">
+        <div class="modal-header">
+          <h3>订单详情</h3>
+          <span class="modal-close" onclick="closeModal('orderDetailModal')">×</span>
+        </div>
+        <div class="order-detail" id="orderDetailContent"></div>
+      </div>
+    </div>
+
+    <!-- 轮播图弹窗 -->
+    <div class="modal hidden" id="bannerModal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="bannerModalTitle">添加轮播图</h3>
+          <span class="modal-close" onclick="closeModal('bannerModal')">×</span>
+        </div>
+        <form class="modal-form" onsubmit="return saveBanner(event)">
+          <input type="hidden" id="bannerId">
+          <div class="form-row">
+            <label>标题</label>
+            <input type="text" id="bannerTitle" required>
+          </div>
+          <div class="form-row">
+            <label>图片</label>
+            <div class="upload-area" id="bannerImageUpload" onclick="document.getElementById('bannerImageInput').click()">
+              <div class="upload-placeholder" id="bannerImagePlaceholder">
+                <span>点击上传图片</span>
+                <small>支持拖拽</small>
+              </div>
+              <img id="bannerImagePreview" class="upload-preview hidden" src="">
+            </div>
+            <input type="file" id="bannerImageInput" class="hidden" accept="image/*" onchange="handleBannerImageUpload(this)">
+            <input type="hidden" id="bannerImage">
+          </div>
+          <div class="form-row">
+            <label>排序</label>
+            <input type="number" id="bannerSortOrder" value="0">
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeModal('bannerModal')">取消</button>
+            <button type="submit" class="btn-primary">保存</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

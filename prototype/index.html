@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大研菜园 - UI原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap');
+        * { font-family: 'Noto Sans SC', system-ui, sans-serif; }
+        .phone-frame {
+            width: 430px;
+            height: 932px;
+            background: #fff;
+            border: 8px solid #333;
+            border-radius: 50px;
+            overflow: hidden;
+            position: relative;
+        }
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #333;
+            border-radius: 0 0 20px 20px;
+            z-index: 100;
+        }
+        .thumbnail {
+            width: 215px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        .thumbnail .phone-frame {
+            width: 215px;
+            height: 466px;
+            border-radius: 25px;
+            border: 3px solid #ddd;
+        }
+        .thumbnail .phone-frame::before {
+            width: 60px;
+            height: 15px;
+            border-radius: 0 0 10px 10px;
+        }
+    </style>
+</head>
+<body class="bg-gray-200 min-h-screen py-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">大研菜园</h1>
+            <p class="text-gray-500">小区蔬菜配送小程序 · UI原型</p>
+            <p class="text-sm text-gray-400 mt-2">技术栈：HTML + Tailwind CSS · 设计参考：美团优选风格</p>
+        </div>
+
+        <!-- Client Section -->
+        <div class="mb-12">
+            <h2 class="text-xl font-bold text-gray-700 mb-6 flex items-center gap-2">
+                <span class="w-8 h-8 bg-green-500 text-white rounded-lg flex items-center justify-center text-sm">
+                    <i class="fas fa-mobile-alt"></i>
+                </span>
+                客户端（小程序端）
+            </h2>
+            <div class="flex flex-wrap gap-6 justify-start">
+                <!-- home.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">home.html</div>
+                    <div class="phone-frame">
+                        <iframe src="home.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- category.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">category.html</div>
+                    <div class="phone-frame">
+                        <iframe src="category.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- product.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">product.html</div>
+                    <div class="phone-frame">
+                        <iframe src="product.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- cart.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">cart.html</div>
+                    <div class="phone-frame">
+                        <iframe src="cart.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- order-confirm.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">order-confirm.html</div>
+                    <div class="phone-frame">
+                        <iframe src="order-confirm.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- order-list.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">order-list.html</div>
+                    <div class="phone-frame">
+                        <iframe src="order-list.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- order-detail.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">order-detail.html</div>
+                    <div class="phone-frame">
+                        <iframe src="order-detail.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- address.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">address.html</div>
+                    <div class="phone-frame">
+                        <iframe src="address.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- mine.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">mine.html</div>
+                    <div class="phone-frame">
+                        <iframe src="mine.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Merchant Section -->
+        <div class="mb-12">
+            <h2 class="text-xl font-bold text-gray-700 mb-6 flex items-center gap-2">
+                <span class="w-8 h-8 bg-orange-500 text-white rounded-lg flex items-center justify-center text-sm">
+                    <i class="fas fa-desktop"></i>
+                </span>
+                商家后台（Web端）
+            </h2>
+            <div class="flex flex-wrap gap-6 justify-start">
+                <!-- merchant-home.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">merchant-home.html</div>
+                    <div class="phone-frame">
+                        <iframe src="merchant-home.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- merchant-products.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">merchant-products.html</div>
+                    <div class="phone-frame">
+                        <iframe src="merchant-products.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- merchant-orders.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">merchant-orders.html</div>
+                    <div class="phone-frame">
+                        <iframe src="merchant-orders.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rider Section -->
+        <div class="mb-12">
+            <h2 class="text-xl font-bold text-gray-700 mb-6 flex items-center gap-2">
+                <span class="w-8 h-8 bg-blue-500 text-white rounded-lg flex items-center justify-center text-sm">
+                    <i class="fas fa-motorcycle"></i>
+                </span>
+                骑手端（小程序内置页面）
+            </h2>
+            <div class="flex flex-wrap gap-6 justify-start">
+                <!-- rider-pending.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">rider-pending.html</div>
+                    <div class="phone-frame">
+                        <iframe src="rider-pending.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+                <!-- rider-delivering.html -->
+                <div class="thumbnail">
+                    <div class="text-sm font-medium text-gray-600 mb-2 text-center">rider-delivering.html</div>
+                    <div class="phone-frame">
+                        <iframe src="rider-delivering.html" class="w-full h-full border-0" scrolling="no"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center text-gray-400 text-sm mt-12 pb-8">
+            <p>大研菜园 · 新鲜到家</p>
+            <p class="mt-1">基于开发文档 v3.0 生成 · UI原型</p>
+        </div>
+    </div>
+</body>
+</html>

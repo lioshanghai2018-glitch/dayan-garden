@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-primary flex items-center justify-between px-6 text-sm font-medium text-white">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-primary px-4 pb-6 pt-1">
+        <div class="flex items-center justify-between">
+            <i class="fas fa-cog text-white text-xl"></i>
+            <h1 class="text-lg font-bold text-white">我的</h1>
+            <i class="fas fa-bell text-white text-xl"></i>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-48px)] overflow-y-auto -mt-4">
+        <!-- User Info Card -->
+        <div class="mx-4 bg-white rounded-xl p-4">
+            <div class="flex items-center gap-4">
+                <div class="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center text-3xl">
+                    👤
+                </div>
+                <div class="flex-1">
+                    <p class="font-bold text-lg text-gray-800">邻居用户</p>
+                    <p class="text-sm text-gray-500 mt-1">ID: 88866688</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-300"></i>
+            </div>
+        </div>
+
+        <!-- Orders -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex items-center justify-between mb-4">
+                <span class="font-bold text-gray-800">我的订单</span>
+                <span class="text-sm text-gray-400 flex items-center">全部订单 <i class="fas fa-chevron-right ml-1 text-xs"></i></span>
+            </div>
+            <div class="grid grid-cols-5 gap-2">
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center relative">
+                        <i class="fas fa-clock text-blue-500"></i>
+                        <span class="absolute -top-1 -right-1 bg-secondary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">2</span>
+                    </div>
+                    <span class="text-xs text-gray-600">待支付</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 bg-yellow-50 rounded-full flex items-center justify-center relative">
+                        <i class="fas fa-store text-yellow-500"></i>
+                        <span class="absolute -top-1 -right-1 bg-secondary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                    </div>
+                    <span class="text-xs text-gray-600">待接单</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center relative">
+                        <i class="fas fa-truck text-green-500"></i>
+                        <span class="absolute -top-1 -right-1 bg-secondary text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">1</span>
+                    </div>
+                    <span class="text-xs text-gray-600">配送中</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center">
+                        <i class="fas fa-box text-purple-500"></i>
+                    </div>
+                    <span class="text-xs text-gray-600">待收货</span>
+                </div>
+                <div class="flex flex-col items-center gap-1.5">
+                    <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center">
+                        <i class="fas fa-star text-gray-400"></i>
+                    </div>
+                    <span class="text-xs text-gray-600">待评价</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu List 1 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl">
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-map-marker-alt text-blue-500"></i>
+                    </div>
+                    <span class="text-gray-800">收货地址</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-400">3个地址</span>
+                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                </div>
+            </div>
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-ticket-alt text-red-500"></i>
+                    </div>
+                    <span class="text-gray-800">优惠券</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs text-gray-400">2张可用</span>
+                    <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+                </div>
+            </div>
+            <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-heart text-yellow-500"></i>
+                    </div>
+                    <span class="text-gray-800">我的收藏</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+            </div>
+        </div>
+
+        <!-- Menu List 2 -->
+        <div class="mx-4 mt-3 bg-white rounded-xl">
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-headset text-purple-500"></i>
+                    </div>
+                    <span class="text-gray-800">联系客服</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+            </div>
+            <div class="flex items-center justify-between p-4 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-question-circle text-green-500"></i>
+                    </div>
+                    <span class="text-gray-800">帮助中心</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+            </div>
+            <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-info-circle text-gray-500"></i>
+                    </div>
+                    <span class="text-gray-800">关于我们</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+            </div>
+        </div>
+
+        <!-- Rider Entry -->
+        <div class="mx-4 mt-3 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-4 text-white">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-motorcycle text-xl"></i>
+                    </div>
+                    <div>
+                        <p class="font-bold">配送员入口</p>
+                        <p class="text-xs opacity-80 mt-0.5">加入我们，成为骑手</p>
+                    </div>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        </div>
+
+        <div class="h-24"></div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 h-20 flex items-start pt-1">
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs">首页</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-th-large text-xl"></i>
+            <span class="text-xs">分类</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400 relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-xs">购物车</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-file-alt text-xl"></i>
+            <span class="text-xs">订单</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-primary">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs">我的</span>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>待取货</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-primary flex items-center justify-between px-6 text-sm font-medium text-white">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-primary px-4 pb-6 pt-1">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-chevron-left text-white"></i>
+            <h1 class="text-lg font-bold text-white flex-1 text-center pr-8">待取货</h1>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-48px)] overflow-y-auto -mt-4">
+        <!-- Order Card 1 -->
+        <div class="mx-4 mt-4 bg-white rounded-xl overflow-hidden">
+            <div class="bg-gradient-to-r from-primary to-green-400 px-4 py-3 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="font-medium">到店自取</span>
+                    <span class="text-xs bg-white/20 px-2 py-0.5 rounded">立即取货</span>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">👨‍🌾</div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">大研本地农场</p>
+                        <p class="text-xs text-gray-400 mt-0.5">云南省丽江市古城区大研镇</p>
+                    </div>
+                </div>
+                <div class="border-t border-dashed border-gray-200 pt-3 mt-3">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-map-marker-alt text-primary mt-1"></i>
+                        <div>
+                            <p class="text-sm text-gray-800">张三 · 138****8888</p>
+                            <p class="text-xs text-gray-500 mt-1">云南省丽江市古城区大研镇XX小区1栋1001</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs text-gray-500">订单号：NX20260509005</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-green-100 rounded flex items-center justify-center text-sm">🥬</div>
+                        <div class="w-8 h-8 bg-red-100 rounded flex items-center justify-center text-sm">🍅</div>
+                        <div class="w-8 h-8 bg-orange-100 rounded flex items-center justify-center text-sm">🥕</div>
+                        <span class="text-xs text-gray-500">共3件</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                    <span class="text-sm text-gray-500">待取货 · 预计 10:30 送达</span>
+                    <span class="text-secondary font-bold">¥10.96</span>
+                </div>
+                <button class="w-full mt-3 h-11 bg-primary text-white rounded-lg font-medium">
+                    确认取货
+                </button>
+            </div>
+        </div>
+
+        <!-- Order Card 2 -->
+        <div class="mx-4 mt-4 bg-white rounded-xl overflow-hidden">
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 px-4 py-3 text-white">
+                <div class="flex items-center justify-between">
+                    <span class="font-medium">送货上门</span>
+                    <span class="text-xs bg-white/20 px-2 py-0.5 rounded">立即取货</span>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center gap-3 mb-3">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-2xl">👨‍🌾</div>
+                    <div class="flex-1">
+                        <p class="font-medium text-gray-800">大研本地农场</p>
+                        <p class="text-xs text-gray-400 mt-0.5">云南省丽江市古城区大研镇</p>
+                    </div>
+                </div>
+                <div class="border-t border-dashed border-gray-200 pt-3 mt-3">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-map-marker-alt text-primary mt-1"></i>
+                        <div>
+                            <p class="text-sm text-gray-800">李四 · 139****9999</p>
+                            <p class="text-xs text-gray-500 mt-1">云南省丽江市古城区大研镇YY小区2栋2002</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-lg p-3 mt-3">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-xs text-gray-500">订单号：NX20260509006</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-yellow-100 rounded flex items-center justify-center text-sm">🍄</div>
+                        <div class="w-8 h-8 bg-purple-100 rounded flex items-center justify-center text-sm">🫘</div>
+                        <span class="text-xs text-gray-500">共2件</span>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
+                    <span class="text-sm text-gray-500">待取货 · 预计 11:00 送达</span>
+                    <span class="text-secondary font-bold">¥18.98</span>
+                </div>
+                <button class="w-full mt-3 h-11 bg-primary text-white rounded-lg font-medium">
+                    确认取货
+                </button>
+            </div>
+        </div>
+
+        <div class="h-24"></div>
+    </div>
+
+    <!-- Tab Bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 h-20 flex items-start pt-1">
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs">首页</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-th-large text-xl"></i>
+            <span class="text-xs">分类</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400 relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span class="text-xs">购物车</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-primary">
+            <i class="fas fa-truck text-xl"></i>
+            <span class="text-xs">待取货</span>
+        </div>
+        <div class="flex-1 flex flex-col items-center gap-0.5 text-gray-400">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs">我的</span>
+        </div>
+    </div>
+</body>
+</html>

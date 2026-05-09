@@ -1,0 +1,121 @@
+.container {
+  padding-bottom: 80px;
+}
+
+.address-list {
+  padding: 12px 16px;
+}
+
+.address-item {
+  background: #FFFFFF;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.address-main {
+  margin-bottom: 12px;
+}
+
+.address-detail {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.address-name {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.address-phone {
+  font-size: 14px;
+  color: #666666;
+}
+
+.default-tag {
+  padding: 2px 8px;
+  background: #2E7D32;
+  color: #FFFFFF;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.address-text {
+  font-size: 14px;
+  color: #999999;
+  display: block;
+}
+
+.address-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+}
+
+.action-btn {
+  font-size: 14px;
+  color: #2E7D32;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 40px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 20px;
+}
+
+.empty-text {
+  font-size: 16px;
+  color: #333333;
+  margin-bottom: 8px;
+}
+
+.empty-hint {
+  font-size: 14px;
+  color: #999999;
+  margin-bottom: 30px;
+}
+
+.empty-btn {
+  padding: 12px 40px;
+  background: #2E7D32;
+  color: #FFFFFF;
+  border-radius: 24px;
+  font-size: 16px;
+}
+
+/* 加载中 */
+.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+  color: #999999;
+}
+
+/* 底部导航 */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #2E7D32;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-text {
+  color: #FFFFFF;
+  font-size: 16px;
+}

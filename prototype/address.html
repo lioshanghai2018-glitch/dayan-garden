@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地址管理</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-white flex items-center justify-between px-6 text-sm font-medium">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-white px-4 h-14 flex items-center justify-between">
+        <i class="fas fa-chevron-left text-gray-600"></i>
+        <h1 class="text-lg font-bold text-gray-800">收货地址</h1>
+        <span class="text-primary text-sm">新增</span>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-96px)] overflow-y-auto p-4">
+        <!-- Address Card 1 - Default -->
+        <div class="bg-white rounded-xl p-4 mb-3 relative">
+            <div class="absolute top-4 right-4">
+                <span class="bg-primary text-white text-xs px-2 py-0.5 rounded-full">默认</span>
+            </div>
+            <div class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-primary text-xl mt-1"></i>
+                <div class="flex-1 pr-16">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium text-gray-800">张三</span>
+                        <span class="text-gray-600">138****8888</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">云南省丽江市古城区大研镇XX小区1栋1001</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-4 text-sm text-gray-500">
+                    <span class="flex items-center gap-1"><i class="far fa-circle"></i> 设为默认</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <span class="text-gray-400 flex items-center gap-1"><i class="fas fa-edit"></i> 编辑</span>
+                    <span class="text-gray-400 flex items-center gap-1"><i class="fas fa-trash-alt"></i> 删除</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Card 2 -->
+        <div class="bg-white rounded-xl p-4 mb-3">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-gray-400 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium text-gray-800">李四</span>
+                        <span class="text-gray-600">139****9999</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">云南省丽江市古城区大研镇YY小区2栋2002</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                    <span class="flex items-center gap-1"><i class="far fa-circle"></i> 设为默认</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <span class="text-gray-400 flex items-center gap-1"><i class="fas fa-edit"></i> 编辑</span>
+                    <span class="text-gray-400 flex items-center gap-1"><i class="fas fa-trash-alt"></i> 删除</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address Card 3 -->
+        <div class="bg-white rounded-xl p-4 mb-3">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-gray-400 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2">
+                        <span class="font-medium text-gray-800">王五</span>
+                        <span class="text-gray-600">137****7777</span>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-2">云南省丽江市古城区大研镇ZZ小区3栋3003</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
+                <div class="flex items-center gap-4 text-sm text-gray-400">
+                    <span class="flex items-center gap-1"><i class="far fa-circle"></i> 设为默认</span>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    <span class="text-gray-400 flex items-center gap-1"><i class="fas fa-edit"></i> 编辑</span>
+                    <span class="text-gray-400 flex items-center gap-1"><i class="fas fa-trash-alt"></i> 删除</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add New Address Button -->
+        <div class="mt-4">
+            <button class="w-full h-12 border-2 border-dashed border-gray-300 text-gray-500 rounded-xl flex items-center justify-center gap-2">
+                <i class="fas fa-plus"></i>
+                <span>添加新地址</span>
+            </button>
+        </div>
+
+        <!-- Tips -->
+        <div class="mt-6 p-4 bg-white rounded-xl">
+            <div class="flex items-start gap-2">
+                <i class="fas fa-info-circle text-primary mt-0.5"></i>
+                <div class="text-xs text-gray-500">
+                    <p>温馨提示：</p>
+                    <p class="mt-1">1. 请确保收货地址准确，以免影响配送</p>
+                    <p>2. 仅支持大研镇范围内的配送</p>
+                    <p>3. 最多保存 10 个收货地址</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

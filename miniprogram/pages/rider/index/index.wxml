@@ -1,0 +1,40 @@
+<view class="container">
+  <view class="rider-header">
+    <image class="rider-avatar" src="{{riderInfo.avatar_url || '/static/avatar.png'}}" mode="aspectFill" />
+    <view class="rider-info">
+      <text class="rider-name">{{riderInfo.nickname || '骑手'}}</text>
+      <text class="rider-status">状态: {{statusText}}</text>
+    </view>
+    <switch checked="{{isOnline}}" bindchange="toggleStatus" color="#FF6B35" />
+  </view>
+
+  <view class="today-stats">
+    <view class="stat-item">
+      <text class="stat-value">{{todayCount}}</text>
+      <text class="stat-label">今日配送</text>
+    </view>
+  </view>
+
+  <view class="order-section">
+    <view class="section-header">
+      <text class="section-title">配送任务 ({{orderList.length}})</text>
+    </view>
+    <view class="order-list">
+      <view class="order-card" wx:for="{{orderList}}" wx:key="delivery_id">
+        <view class="order-info">
+          <text class="order-no">{{item.order_no}}</text>
+          <text class="order-address">{{item.address.detail}}</text>
+          <text class="order-contact">{{item.address.name}} {{item.address.phone}}</text>
+        </view>
+        <view class="order-actions">
+          <view wx:if="{{item.status === 0}}" class="action-btn" bindtap="accept" data-id="{{item.delivery_id}}">接单</view>
+          <view wx:if="{{item.status === 1}}" class="action-btn primary" bindtap="pickup" data-id="{{item.delivery_id}}">确认取货</view>
+          <view wx:if="{{item.status === 2}}" class="action-btn" bindtap="deliver" data-id="{{item.delivery_id}}">开始配送</view>
+          <view wx:if="{{item.status === 3}}" class="action-btn" bindtap="arrive" data-id="{{item.delivery_id}}">已到达</view>
+          <view wx:if="{{item.status === 4}}" class="action-btn primary" bindtap="complete" data-id="{{item.delivery_id}}">确认送达</view>
+        </view>
+      </view>
+      <view class="empty-tip" wx:if="{{orderList.length === 0}}">暂无配送任务</view>
+    </view>
+  </view>
+</view>

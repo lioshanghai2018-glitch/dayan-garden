@@ -1,0 +1,35 @@
+<view class="container">
+  <view class="form-item">
+    <text class="form-label">收货人</text>
+    <input class="form-input" placeholder="请输入收货人姓名" value="{{formData.name}}" bindinput="bindName" />
+  </view>
+
+  <view class="form-item">
+    <text class="form-label">手机号</text>
+    <input class="form-input" type="number" placeholder="请输入手机号" value="{{formData.phone}}" bindinput="bindPhone" />
+  </view>
+
+  <view class="form-item">
+    <text class="form-label">小区</text>
+    <picker mode="selector" range="{{communities}}" value="{{communityIndex}}" bindchange="bindCommunityChange">
+      <view class="form-input">{{formData.community || '请选择小区'}}</view>
+    </picker>
+  </view>
+
+  <view class="form-item">
+    <text class="form-label">楼栋单元</text>
+    <input class="form-input" placeholder="如：3栋2单元" value="{{formData.building}}" bindinput="bindBuilding" />
+  </view>
+
+  <view class="form-item">
+    <text class="form-label">楼层房号</text>
+    <input class="form-input" placeholder="如：5楼501" value="{{formData.room}}" bindinput="bindRoom" />
+  </view>
+
+  <view class="form-item">
+    <text class="form-label">设为默认</text>
+    <switch checked="{{formData.is_default}}" bindchange="bindDefault" color="#2E7D32" />
+  </view>
+
+  <view class="save-btn" bindtap="saveAddress">保存</view>
+</view>

@@ -1,0 +1,60 @@
+<view class="container">
+  <!-- 商品图片 -->
+  <view class="product-image">
+    <image src="{{product.image || '/static/placeholder.png'}}" mode="aspectFill" />
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="product-info card">
+    <view class="price-row">
+      <view class="price">
+        <text class="price-integer">¥{{product.price}}</text>
+      </view>
+      <text class="original-price" wx:if="{{product.original_price}}">¥{{product.original_price}}</text>
+    </view>
+    <text class="product-name">{{product.name}}</text>
+    <text class="product-subtitle">{{product.subtitle}}</text>
+    <view class="product-meta">
+      <text>单位: {{product.unit}}</text>
+      <text>库存: {{product.stock}}</text>
+    </view>
+    <view class="product-tags">
+      <text class="tag" wx:for="{{product.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 商品描述 -->
+  <view class="product-desc card" wx:if="{{product.description}}">
+    <text class="section-title">商品详情</text>
+    <text class="desc-content">{{product.description}}</text>
+  </view>
+
+  <!-- 底部购买栏 -->
+  <view class="bottom-bar">
+    <view class="cart-icon" bindtap="goToCart">
+      <text class="iconfont">🛒</text>
+    </view>
+    <view class="btn-group">
+      <view class="btn-add-cart" bindtap="addToCart">加入购物车</view>
+      <view class="btn-buy" bindtap="buyNow">立即购买</view>
+    </view>
+  </view>
+
+  <!-- 数量选择弹窗 -->
+  <view class="quantity-modal" wx:if="{{showQuantityModal}}" bindtap="closeModal">
+    <view class="modal-content" catchtap="stopProp">
+      <text class="modal-title">选择数量</text>
+      <view class="quantity-row">
+        <text class="quantity-label">数量</text>
+        <view class="quantity-control">
+          <text class="qty-btn" bindtap="decreaseQty">-</text>
+          <text class="qty-value">{{quantity}}</text>
+          <text class="qty-btn" bindtap="increaseQty">+</text>
+        </view>
+      </view>
+      <view class="modal-btns">
+        <view class="btn-primary" bindtap="confirmAdd">确定</view>
+      </view>
+    </view>
+  </view>
+</view>

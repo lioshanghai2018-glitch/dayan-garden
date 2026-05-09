@@ -1,0 +1,27 @@
+<view class="container">
+  <view class="search-bar">
+    <input class="search-input" placeholder="搜索蔬菜、水果..." bindinput="onInput" value="{{keyword}}" />
+    <text class="search-btn" bindtap="search">搜索</text>
+  </view>
+
+  <view class="result-list" wx:if="{{products.length > 0}}">
+    <view class="product-item" wx:for="{{products}}" wx:key="id" bindtap="goToDetail" data-id="{{item.id}}">
+      <image class="product-image" src="{{item.image || '/static/placeholder.png'}}" mode="aspectFill" />
+      <view class="product-info">
+        <text class="product-name">{{item.name}}</text>
+        <view class="product-bottom">
+          <text class="price">¥{{item.price}}</text>
+          <text class="product-unit">{{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty-state" wx:elif="{{searched && products.length === 0}}">
+    <text>未找到相关商品</text>
+  </view>
+
+  <view class="empty-state" wx:else>
+    <text>输入关键词搜索商品</text>
+  </view>
+</view>

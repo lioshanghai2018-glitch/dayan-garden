@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #fff; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-white flex items-center justify-between px-6 text-sm font-medium absolute top-0 left-0 right-0 z-20">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-140px)] overflow-y-auto">
+        <!-- Back Button -->
+        <div class="absolute top-12 left-0 z-30 px-4 py-2">
+            <div class="w-9 h-9 bg-black/30 rounded-full flex items-center justify-center">
+                <i class="fas fa-chevron-left text-white"></i>
+            </div>
+        </div>
+
+        <!-- Share Button -->
+        <div class="absolute top-12 right-0 z-30 px-4 py-2 flex gap-2">
+            <div class="w-9 h-9 bg-black/30 rounded-full flex items-center justify-center">
+                <i class="fas fa-share-alt text-white"></i>
+            </div>
+            <div class="w-9 h-9 bg-black/30 rounded-full flex items-center justify-center">
+                <i class="fas fa-ellipsis-h text-white"></i>
+            </div>
+        </div>
+
+        <!-- Product Image -->
+        <div class="h-80 bg-gradient-to-br from-green-200 to-green-100 flex items-center justify-center text-9xl pt-12">
+            🥬
+        </div>
+
+        <!-- Product Info -->
+        <div class="p-4">
+            <div class="flex items-start justify-between">
+                <div>
+                    <span class="text-secondary font-bold text-2xl">¥3.99</span>
+                    <span class="text-gray-400 text-sm ml-2">/500g</span>
+                </div>
+                <span class="text-xs text-gray-400 line-through">¥5.99</span>
+            </div>
+
+            <h1 class="text-lg font-bold text-gray-800 mt-2">新鲜有机小白菜 500g</h1>
+
+            <div class="flex items-center gap-2 mt-2">
+                <span class="bg-secondary/10 text-secondary text-xs px-2 py-0.5 rounded">新鲜</span>
+                <span class="bg-green-100 text-primary text-xs px-2 py-0.5 rounded">本地直供</span>
+                <span class="bg-orange-100 text-orange-600 text-xs px-2 py-0.5 rounded">有机种植</span>
+            </div>
+
+            <!-- Supplier Info -->
+            <div class="mt-4 p-3 bg-gray-50 rounded-xl flex items-center gap-3">
+                <div class="w-10 h-10 bg-green-200 rounded-full flex items-center justify-center text-xl">👨‍🌾</div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-800">大研本地农场</p>
+                    <p class="text-xs text-gray-400">云南省丽江市 · 专注有机蔬菜20年</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-300 text-sm"></i>
+            </div>
+
+            <!-- Stock & Sales -->
+            <div class="flex items-center gap-6 mt-3 text-sm text-gray-500">
+                <span><i class="fas fa-box mr-1"></i> 库存 200</span>
+                <span><i class="fas fa-fire mr-1"></i> 月售 856</span>
+            </div>
+
+            <!-- Quantity Selector -->
+            <div class="mt-4">
+                <p class="text-sm font-medium text-gray-700 mb-2">选择数量</p>
+                <div class="flex items-center gap-4">
+                    <div class="flex items-center border border-gray-200 rounded-lg">
+                        <button class="w-10 h-10 flex items-center justify-center text-gray-400">
+                            <i class="fas fa-minus text-xs"></i>
+                        </button>
+                        <span class="w-12 text-center font-medium">1</span>
+                        <button class="w-10 h-10 flex items-center justify-center text-primary">
+                            <i class="fas fa-plus text-xs"></i>
+                        </button>
+                    </div>
+                    <span class="text-sm text-gray-400">库存充足</span>
+                </div>
+            </div>
+
+            <!-- Product Description -->
+            <div class="mt-4">
+                <p class="text-sm font-medium text-gray-700 mb-2">商品详情</p>
+                <div class="text-sm text-gray-500 leading-relaxed">
+                    <p>🌿 产品特点：</p>
+                    <p class="mt-1">精选有机种植小白菜，叶片嫩绿饱满，口感清脆爽口。每日清晨采摘，新鲜直达，保证蔬菜的新鲜度和营养价值。</p>
+                    <p class="mt-2">📍 产地：云南省丽江市大研镇</p>
+                    <p class="mt-1">🌾 种植方式：有机肥料，无农药残留</p>
+                    <p class="mt-1">📦 包装：真空包装，保鲜到家</p>
+                </div>
+            </div>
+
+            <div class="h-24"></div>
+        </div>
+    </div>
+
+    <!-- Bottom Action Bar -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 flex items-center gap-3">
+        <div class="flex items-center gap-4">
+            <div class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-heart text-lg"></i>
+                <span class="text-xs mt-0.5">收藏</span>
+            </div>
+            <div class="flex flex-col items-center text-gray-400">
+                <i class="fas fa-shopping-cart text-lg"></i>
+                <span class="text-xs mt-0.5">购物车</span>
+            </div>
+        </div>
+        <div class="flex-1 flex gap-2">
+            <button class="flex-1 h-11 border-2 border-primary text-primary rounded-full font-medium">
+                加入购物车
+            </button>
+            <button class="flex-1 h-11 bg-primary text-white rounded-full font-medium">
+                立即购买
+            </button>
+        </div>
+    </div>
+</body>
+</html>

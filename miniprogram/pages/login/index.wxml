@@ -1,0 +1,12 @@
+<view class="container">
+  <view class="logo-section">
+    <view class="logo">🥬</view>
+    <text class="app-name">大研菜园</text>
+    <text class="app-slogan">新鲜蔬菜送到家</text>
+  </view>
+
+  <view class="login-section">
+    <button class="btn-login" bindtap="autoLogin">微信一键登录</button>
+    <text class="login-hint">登录后即可享受更多服务</text>
+  </view>
+</view>

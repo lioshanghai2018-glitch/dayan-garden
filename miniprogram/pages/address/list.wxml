@@ -1,0 +1,43 @@
+<view class="container">
+  <!-- 地址列表 -->
+  <view class="address-list" wx:if="{{addresses.length > 0}}">
+    <view class="address-item" wx:for="{{addresses}}" wx:key="id">
+      <view class="address-main" bindtap="selectAddress" data-id="{{item.id}}">
+        <view class="address-detail">
+          <text class="address-name">{{item.name}}</text>
+          <text class="address-phone">{{item.phone}}</text>
+          <text class="default-tag" wx:if="{{item.is_default === 1}}">默认</text>
+        </view>
+        <text class="address-text">{{item.community}} {{item.building}} {{item.room}}</text>
+      </view>
+      <view class="address-actions">
+        <text class="action-btn" bindtap="editAddress" data-id="{{item.id}}">编辑</text>
+        <text class="action-btn" bindtap="deleteAddress" data-id="{{item.id}}">删除</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 - 新增地址入口 -->
+  <view class="empty-state" wx:if="{{addresses.length === 0 && !loading}}">
+    <view class="empty-icon">📍</view>
+    <text class="empty-text">暂无收货地址</text>
+    <text class="empty-hint">点击下方按钮添加新地址</text>
+    <view class="empty-btn" bindtap="addAddress">+ 添加新地址</view>
+  </view>
+
+  <!-- 加载中状态 -->
+  <view class="loading-state" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 错误状态 -->
+  <view class="error-state" wx:if="{{hasError && !loading}}">
+    <text class="error-text">加载失败</text>
+    <text class="retry-btn" bindtap="loadAddresses">点击重试</text>
+  </view>
+
+  <!-- 底部导航区域 -->
+  <view class="bottom-nav" bindtap="addAddress">
+    <text class="nav-text">+ 添加新地址</text>
+  </view>
+</view>

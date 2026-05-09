@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>订单详情</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2D8C4E',
+                        secondary: '#FF6B35',
+                        accent: '#FFB800',
+                        bgMain: '#F5F5F5',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        body { background: #F5F5F5; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-bgMain w-[430px] h-[932px] overflow-hidden relative">
+    <!-- Status Bar -->
+    <div class="h-12 bg-primary flex items-center justify-between px-6 text-sm font-medium text-white">
+        <span>9:41</span>
+        <div class="flex items-center gap-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs ml-1"></i>
+            <i class="fas fa-battery-full text-xs ml-1"></i>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="bg-primary px-4 pb-6 pt-1">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-chevron-left text-white"></i>
+            <h1 class="text-lg font-bold text-white flex-1 text-center pr-8">订单详情</h1>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="h-[calc(100%-48px)] overflow-y-auto -mt-4">
+        <!-- Status Card -->
+        <div class="mx-4 bg-gradient-to-r from-primary to-green-400 rounded-xl p-4 text-white">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                    <i class="fas fa-truck text-2xl"></i>
+                </div>
+                <div>
+                    <p class="font-bold text-lg">骑手正在配送中</p>
+                    <p class="text-sm opacity-90 mt-0.5">预计 10:30 前送达</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delivery Progress -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex items-center justify-between mb-4">
+                <span class="font-medium text-gray-800">配送进度</span>
+                <span class="text-xs text-primary">实时更新中</span>
+            </div>
+            <div class="relative pl-6">
+                <!-- Line -->
+                <div class="absolute left-2 top-2 bottom-2 w-0.5 bg-gray-200"></div>
+                <!-- Progress Line -->
+                <div class="absolute left-2 top-2 w-0.5 bg-primary" style="height: 60%"></div>
+
+                <!-- Step 1 - Completed -->
+                <div class="flex items-start gap-3 mb-4 relative">
+                    <div class="w-4 h-4 bg-primary rounded-full flex items-center justify-center z-10">
+                        <i class="fas fa-check text-white text-xs"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">商家已接单</p>
+                        <p class="text-xs text-gray-400 mt-0.5">05-09 08:30</p>
+                    </div>
+                </div>
+                <!-- Step 2 - Current -->
+                <div class="flex items-start gap-3 mb-4 relative">
+                    <div class="w-4 h-4 bg-primary rounded-full flex items-center justify-center z-10 animate-pulse">
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">骑手取货中</p>
+                        <p class="text-xs text-gray-400 mt-0.5">05-09 08:45</p>
+                    </div>
+                </div>
+                <!-- Step 3 - Pending -->
+                <div class="flex items-start gap-3 relative">
+                    <div class="w-4 h-4 bg-gray-200 rounded-full z-10"></div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-400">送达中</p>
+                        <p class="text-xs text-gray-300 mt-0.5">预计 10:30</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rider Info -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-xl">🚴</div>
+                    <div>
+                        <p class="font-medium text-gray-800">骑手 张三</p>
+                        <p class="text-xs text-gray-400 mt-0.5">正在为您配送</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-phone text-green-600"></i>
+                    </button>
+                    <button class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-comment-dots text-blue-600"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Address -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex items-start gap-3">
+                <i class="fas fa-map-marker-alt text-primary text-lg mt-0.5"></i>
+                <div>
+                    <p class="font-medium text-gray-800">张三 138****8888</p>
+                    <p class="text-sm text-gray-500 mt-1">云南省丽江市古城区大研镇XX小区1栋1001</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Info -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="flex items-center gap-2 mb-3">
+                <i class="fas fa-store text-gray-400"></i>
+                <span class="font-medium text-gray-800">大研本地农场</span>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center text-xl">🥬</div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-800">新鲜小白菜</p>
+                        <p class="text-xs text-gray-400">x2</p>
+                    </div>
+                    <span class="text-sm text-gray-600">¥7.98</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-xl">🍅</div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-800">有机西红柿</p>
+                        <p class="text-xs text-gray-400">x1</p>
+                    </div>
+                    <span class="text-sm text-gray-600">¥4.99</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-xl">🥕</div>
+                    <div class="flex-1">
+                        <p class="text-sm text-gray-800">新鲜胡萝卜</p>
+                        <p class="text-xs text-gray-400">x1</p>
+                    </div>
+                    <span class="text-sm text-gray-600">¥2.99</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">订单编号</span>
+                    <span class="text-gray-800">NX20260509001 <i class="fas fa-copy text-gray-400 ml-1"></i></span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">下单时间</span>
+                    <span class="text-gray-800">05-09 08:25</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">支付方式</span>
+                    <span class="text-gray-800">微信支付</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">配送时段</span>
+                    <span class="text-gray-800">上午配送 08:00-12:00</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">备注</span>
+                    <span class="text-gray-800">轻拿轻放</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Summary -->
+        <div class="mx-4 mt-3 bg-white rounded-xl p-4">
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-gray-500">商品金额</span>
+                    <span class="text-gray-800">¥15.96</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">优惠券</span>
+                    <span class="text-green-600">-¥5.00</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-gray-500">运费</span>
+                    <span class="text-gray-800">¥0.00</span>
+                </div>
+                <div class="flex justify-between pt-2 border-t border-gray-100">
+                    <span class="font-medium text-gray-800">实付金额</span>
+                    <span class="text-secondary font-bold text-lg">¥10.96</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="h-24"></div>
+    </div>
+
+    <!-- Bottom Action -->
+    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-100 px-4 py-3 flex gap-3">
+        <button class="flex-1 h-11 border border-gray-300 text-gray-600 rounded-full font-medium">
+            联系商家
+        </button>
+        <button class="flex-1 h-11 bg-primary text-white rounded-full font-medium">
+            确认收货
+        </button>
+    </div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+.container {
+  padding: 16px;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  background: #FFFFFF;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+}
+
+.form-label {
+  width: 80px;
+  font-size: 14px;
+  color: #333333;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  font-size: 14px;
+  text-align: right;
+}
+
+.location-section {
+  background: #FFFFFF;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.location-btn {
+  display: flex;
+  align-items: center;
+  color: #2E7D32;
+  font-size: 14px;
+}
+
+.location-icon {
+  margin-right: 8px;
+  font-size: 18px;
+}
+
+.location-hint {
+  font-size: 12px;
+  color: #999999;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-title {
+  font-size: 12px;
+  color: #999999;
+  padding: 8px 0;
+  margin-bottom: 4px;
+}
+
+.save-btn {
+  margin: 24px 16px;
+  padding: 14px;
+  background: #2E7D32;
+  color: #FFFFFF;
+  text-align: center;
+  font-size: 16px;
+  border-radius: 8px;
+}

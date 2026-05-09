@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大研菜园 - 骑手端</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background: #f5f5f5; min-height: 100vh; }
+
+    /* Login Page */
+    .login-wrap { display: flex; align-items: center; justify-content: center; min-height: 100vh; background: linear-gradient(135deg, #2D8C4E, #4CAF50); }
+    .login-box { width: 90%; max-width: 340px; background: white; border-radius: 16px; padding: 32px 24px; box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+    .login-logo { font-size: 56px; text-align: center; }
+    .login-title { color: #2D8C4E; text-align: center; font-size: 22px; margin: 8px 0 4px; }
+    .login-sub { text-align: center; color: #888; font-size: 14px; margin-bottom: 28px; }
+    .login-input { width: 100%; padding: 13px 14px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; margin-bottom: 14px; }
+    .login-btn { width: 100%; padding: 14px; background: #2D8C4E; color: white; border: none; border-radius: 8px; font-size: 17px; font-weight: bold; cursor: pointer; }
+    .login-hint { text-align: center; color: #aaa; font-size: 12px; margin-top: 16px; }
+
+    /* Main Pages */
+    .page { display: none; min-height: 100vh; padding-bottom: 65px; }
+    .page.active { display: block; }
+
+    /* Header */
+    .page-header { background: #2D8C4E; color: white; padding: 16px; display: flex; justify-content: space-between; align-items: center; font-size: 16px; }
+    .header-name { font-size: 18px; font-weight: bold; }
+    .header-count { font-size: 14px; opacity: 0.9; }
+
+    /* Order Card */
+    .order-list { padding: 12px; }
+    .empty-tip { text-align: center; color: #999; padding: 48px 0; font-size: 15px; }
+    .order-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .order-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #eee; }
+    .order-no { color: #666; font-size: 13px; }
+    .badge { padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+    .badge-1 { background: #FFF3E0; color: #E65100; }
+    .badge-2 { background: #E3F2FD; color: #1565C0; }
+    .badge-3 { background: #E8F5E9; color: #2E7D32; }
+    .badge-4 { background: #F3E5F5; color: #7B1FA2; }
+    .order-addr { display: flex; gap: 8px; margin-bottom: 12px; font-size: 15px; }
+    .addr-icon { color: #2D8C4E; }
+    .addr-name { font-weight: bold; }
+    .addr-detail { color: #666; margin-top: 2px; }
+    .order-money { font-size: 19px; font-weight: bold; color: #FF5722; }
+    .order-actions { display: flex; gap: 10px; margin-top: 12px; }
+    .action-btn { flex: 1; padding: 11px; border: none; border-radius: 8px; font-size: 15px; font-weight: bold; cursor: pointer; text-align: center; text-decoration: none; display: inline-block; }
+    .btn-call { background: #FFF3E0; color: #E65100; }
+    .btn-start { background: #2D8C4E; color: white; }
+    .btn-arrive { background: #1565C0; color: white; }
+    .btn-complete { background: #4CAF50; color: white; }
+
+    /* Tab Bar */
+    .tab-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; border-top: 1px solid #eee; box-shadow: 0 -2px 6px rgba(0,0,0,0.05); }
+    .tab-item { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 10px 0; color: #999; font-size: 11px; cursor: pointer; }
+    .tab-item.active { color: #2D8C4E; }
+    .tab-icon { font-size: 22px; margin-bottom: 2px; }
+
+    /* History Page */
+    .history-date { color: #666; font-size: 13px; padding: 10px 0 6px; border-bottom: 1px solid #eee; margin-bottom: 8px; }
+    .history-card { background: white; border-radius: 10px; padding: 14px; margin-bottom: 10px; }
+    .history-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    .history-row:not(:last-child) { border-bottom: 1px solid #f0f0f0; }
+    .history-no { color: #666; font-size: 13px; }
+    .history-time { color: #999; font-size: 12px; margin-top: 2px; }
+    .history-amt { font-size: 17px; font-weight: bold; color: #FF5722; }
+
+    /* My Page */
+    .my-content { padding: 16px; }
+    .my-card { background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px; display: flex; align-items: center; }
+    .my-avatar { font-size: 44px; margin-right: 16px; }
+    .my-info {}
+    .my-name { font-size: 19px; font-weight: bold; }
+    .my-phone { color: #888; font-size: 14px; margin-top: 3px; }
+    .stats-row { display: flex; gap: 12px; margin-bottom: 16px; }
+    .stat-box { flex: 1; background: white; border-radius: 12px; padding: 18px; text-align: center; }
+    .stat-num { font-size: 30px; font-weight: bold; color: #2D8C4E; }
+    .stat-label { font-size: 13px; color: #888; margin-top: 4px; }
+    .logout-btn { width: 100%; padding: 13px; background: white; color: #f56c6c; border: none; border-radius: 10px; font-size: 16px; cursor: pointer; }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; align-items: center; justify-content: center; }
+    .modal-overlay.show { display: flex; }
+    .modal-box { background: white; border-radius: 14px; width: 78%; max-width: 300px; overflow: hidden; }
+    .modal-body { padding: 24px; text-align: center; font-size: 16px; }
+    .modal-footer { display: flex; }
+    .modal-btn { flex: 1; padding: 14px; border: none; font-size: 16px; cursor: pointer; }
+    .modal-btn.cancel { background: #f0f0f0; color: #666; }
+    .modal-btn.confirm { background: #2D8C4E; color: white; }
+
+    /* Toast */
+    .toast { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.75); color: white; padding: 12px 24px; border-radius: 8px; font-size: 15px; z-index: 1001; }
+    .toast.show { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="login-wrap">
+    <div class="login-box">
+      <div class="login-logo">🥬</div>
+      <h1 class="login-title">大研菜园</h1>
+      <p class="login-sub">骑手配送平台</p>
+      <input type="text" id="username" class="login-input" placeholder="用户名" value="rider">
+      <input type="password" id="password" class="login-input" placeholder="密码" value="rider123">
+      <button class="login-btn" id="loginBtn">登录</button>
+      <p class="login-hint">演示账号: rider / rider123</p>
+    </div>
+  </div>
+
+  <!-- Pending Page -->
+  <div id="pendingPage" class="page">
+    <div class="page-header">
+      <span class="header-name" id="riderName">骑手</span>
+      <span class="header-count">今日 <span id="todayCount">0</span> 单</span>
+    </div>
+    <div class="order-list" id="pendingList">
+      <div class="empty-tip">暂无待取货订单</div>
+    </div>
+  </div>
+
+  <!-- Delivering Page -->
+  <div id="deliveringPage" class="page">
+    <div class="page-header">
+      <span class="header-name">配送中</span>
+      <span class="header-count" id="deliveringCount">0 单</span>
+    </div>
+    <div class="order-list" id="deliveringList">
+      <div class="empty-tip">暂无配送中订单</div>
+    </div>
+  </div>
+
+  <!-- History Page -->
+  <div id="historyPage" class="page">
+    <div class="page-header"><span class="header-name">历史记录</span></div>
+    <div class="order-list" id="historyList">
+      <div class="empty-tip">暂无历史记录</div>
+    </div>
+  </div>
+
+  <!-- My Page -->
+  <div id="myPage" class="page">
+    <div class="page-header"><span class="header-name">我的</span></div>
+    <div class="my-content">
+      <div class="my-card">
+        <span class="my-avatar">🏍️</span>
+        <div class="my-info">
+          <div class="my-name" id="myName">骑手</div>
+          <div class="my-phone" id="myPhone">-</div>
+        </div>
+      </div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num" id="myToday">0</div>
+          <div class="stat-label">今日配送</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num" id="myWeek">0</div>
+          <div class="stat-label">本周配送</div>
+        </div>
+      </div>
+      <button class="logout-btn" id="logoutBtn">退出登录</button>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div id="tabBar" class="tab-bar" style="display:none;">
+    <div class="tab-item active" data-tab="pending">
+      <span class="tab-icon">📦</span>
+      <span>待取货</span>
+    </div>
+    <div class="tab-item" data-tab="delivering">
+      <span class="tab-icon">🚴</span>
+      <span>配送中</span>
+    </div>
+    <div class="tab-item" data-tab="history">
+      <span class="tab-icon">📋</span>
+      <span>历史</span>
+    </div>
+    <div class="tab-item" id="refreshBtn" onclick="loadAll()">
+      <span class="tab-icon">🔄</span>
+      <span>刷新</span>
+    </div>
+    <div class="tab-item" data-tab="my">
+      <span class="tab-icon">👤</span>
+      <span>我的</span>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div id="confirmModal" class="modal-overlay">
+    <div class="modal-box">
+      <div class="modal-body" id="modalText">确认操作？</div>
+      <div class="modal-footer">
+        <button class="modal-btn cancel" id="modalCancel">取消</button>
+        <button class="modal-btn confirm" id="modalConfirm">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+<script>
+(function() {
+  var API = '/api';
+  var authToken = null;
+  var currentRider = null;
+  var pendingAction = null;
+
+  // Elements
+  var $ = function(id) { return document.getElementById(id); };
+
+  // Login
+  $('loginBtn').onclick = function() {
+    var u = $('username').value;
+    var p = $('password').value;
+    if (!u || !p) { showToast('请输入用户名和密码'); return; }
+    $('loginBtn').textContent = '登录中...';
+    $('loginBtn').disabled = true;
+    fetch(API + '/rider/login', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({username: u, password: p})
+    }).then(function(r) { return r.json(); })
+    .then(function(json) {
+      $('loginBtn').textContent = '登录';
+      $('loginBtn').disabled = false;
+      if (json.code === 200) {
+        authToken = json.data.token;
+        currentRider = json.data.user;
+        localStorage.setItem('rider_token', authToken);
+        localStorage.setItem('rider_user', JSON.stringify(currentRider));
+        enterMain();
+        showToast('登录成功');
+      } else {
+        showToast(json.message || '登录失败');
+      }
+    }).catch(function() {
+      $('loginBtn').textContent = '登录';
+      $('loginBtn').disabled = false;
+      showToast('网络错误');
+    });
+  };
+
+  // Logout
+  $('logoutBtn').onclick = function() {
+    authToken = null;
+    currentRider = null;
+    localStorage.removeItem('rider_token');
+    localStorage.removeItem('rider_user');
+    showLogin();
+    showToast('已退出');
+  };
+
+  // Tab navigation
+  document.querySelectorAll('.tab-item').forEach(function(tab) {
+    tab.onclick = function() {
+      var name = this.getAttribute('data-tab');
+      switchTab(name);
+    };
+  });
+
+  // Event delegation for dynamically created buttons
+  document.addEventListener('click', function(e) {
+    // Start delivery button
+    if (e.target.classList.contains('btn-start')) {
+      var id = e.target.getAttribute('data-id');
+      if (id) startDelivery(parseInt(id));
+    }
+    // Arrived button
+    if (e.target.classList.contains('btn-arrive')) {
+      var id = e.target.getAttribute('data-id');
+      if (id) arriveDelivery(parseInt(id));
+    }
+    // Complete delivery button
+    if (e.target.classList.contains('btn-complete')) {
+      var id = e.target.getAttribute('data-id');
+      if (id) showConfirm(id, 'complete');
+    }
+  });
+
+  // Modal
+  $('modalCancel').onclick = function() { hideModal(); };
+  $('modalConfirm').onclick = function() {
+    if (!pendingAction) return;
+    var id = pendingAction.id;
+    var action = pendingAction.action;
+    hideModal();
+    var url = action === 'start' ? '/rider/order/start' : '/rider/order/complete';
+    api(url, 'POST', {delivery_id: id}).then(function(json) {
+      showToast(json.message || '操作成功');
+      loadAll();
+    }).catch(function(e) { showToast(e.message || '操作失败'); });
+  };
+
+  // Functions
+  function showLogin() {
+    $('loginPage').style.display = 'flex';
+    $('tabBar').style.display = 'none';
+    hideAllPages();
+    hideModal();
+  }
+
+  function enterMain() {
+    $('loginPage').style.display = 'none';
+    $('tabBar').style.display = 'flex';
+    loadAll();
+    switchTab('pending');
+  }
+
+  function hideAllPages() {
+    ['pendingPage', 'deliveringPage', 'historyPage', 'myPage'].forEach(function(id) {
+      $(id).classList.remove('active');
+      $(id).style.display = 'none';
+    });
+  }
+
+  function switchTab(name) {
+    hideAllPages();
+    var page = $(name + 'Page');
+    page.style.display = 'block';
+    page.classList.add('active');
+    document.querySelectorAll('.tab-item').forEach(function(t) {
+      t.classList.remove('active');
+      if (t.getAttribute('data-tab') === name) t.classList.add('active');
+    });
+  }
+
+  function loadAll() {
+    loadRiderInfo();
+    loadPending();
+    loadDelivering();
+    loadHistory();
+    loadStats();
+  }
+
+  function loadRiderInfo() {
+    if (!currentRider) return;
+    $('riderName').textContent = currentRider.nickname || '骑手';
+    $('myName').textContent = currentRider.nickname || '骑手';
+    $('myPhone').textContent = currentRider.phone || '-';
+  }
+
+  function loadPending() {
+    api('/rider/orders/pending').then(function(json) {
+      var list = json.data || [];
+      var html = '';
+      if (list.length === 0) {
+        html = '<div class="empty-tip">暂无待取货订单</div>';
+      } else {
+        list.forEach(function(o) {
+          var a = o.address || {};
+          html += '<div class="order-card" data-id="' + o.delivery_id + '">' +
+            '<div class="order-row">' +
+              '<span class="order-no">' + o.order_no + '</span>' +
+              '<span class="badge badge-1">待取货</span>' +
+            '</div>' +
+            '<div class="order-addr"><span class="addr-icon">📍</span><div><div class="addr-name">' + (a.name||'') + ' ' + (a.phone||'') + '</div><div class="addr-detail">' + (a.detail||'') + '</div></div></div>' +
+            '<div class="order-row">' +
+              '<span></span><span class="order-money">¥' + ((o.pay_amount||0)).toFixed(2) + '</span>' +
+            '</div>' +
+            '<div class="order-actions">' +
+              '<a href="tel:' + (a.phone||'') + '" class="action-btn btn-call">📞 联系</a>' +
+              '<button class="action-btn btn-start" data-id="' + o.delivery_id + '">开始配送</button>' +
+            '</div>' +
+          '</div>';
+        });
+      }
+      $('pendingList').innerHTML = html;
+      $('todayCount').textContent = list.length;
+    });
+  }
+
+  function loadDelivering() {
+    api('/rider/orders/delivering').then(function(json) {
+      var list = json.data || [];
+      var html = '';
+      if (list.length === 0) {
+        html = '<div class="empty-tip">暂无配送中订单</div>';
+      } else {
+        list.forEach(function(o) {
+          var a = o.address || {};
+          var sm = {2:'badge-1 取货中', 3:'badge-2 配送中', 4:'badge-3 已到达'};
+          var b = (sm[o.status] || 'badge-1').split(' ');
+          var actionsHtml = '<a href="tel:' + (a.phone||'') + '" class="action-btn btn-call">📞 拨打</a>';
+          if (o.status === 3) {
+            actionsHtml += '<button class="action-btn btn-arrive" data-id="' + o.delivery_id + '">已到达</button>';
+          }
+          if (o.status === 4) {
+            actionsHtml += '<button class="action-btn btn-complete" data-id="' + o.delivery_id + '">确认送达</button>';
+          }
+          html += '<div class="order-card" data-id="' + o.delivery_id + '">' +
+            '<div class="order-row">' +
+              '<span class="order-no">' + o.order_no + '</span>' +
+              '<span class="badge ' + b[0] + '">' + b[1] + '</span>' +
+            '</div>' +
+            '<div class="order-addr"><span class="addr-icon">📍</span><div><div class="addr-name">' + (a.name||'') + '</div><div class="addr-detail">' + (a.phone||'') + ' · ' + (a.detail||'') + '</div></div></div>' +
+            '<div class="order-row">' +
+              '<span></span><span class="order-money">¥' + ((o.pay_amount||0)).toFixed(2) + '</span>' +
+            '</div>' +
+            '<div class="order-actions">' + actionsHtml + '</div>' +
+          '</div>';
+        });
+      }
+      $('deliveringList').innerHTML = html;
+      $('deliveringCount').textContent = list.length + ' 单';
+    });
+  }
+
+  function loadHistory() {
+    api('/rider/orders/history').then(function(json) {
+      var list = json.data || [];
+      var html = '';
+      if (list.length === 0) {
+        html = '<div class="empty-tip">暂无历史记录</div>';
+      } else {
+        list.forEach(function(o) {
+          html += '<div class="history-card">' +
+            '<div class="history-row">' +
+              '<div><div class="history-no">' + o.order_no + '</div><div class="history-time">' + o.complete_time + '</div></div>' +
+              '<span class="history-amt">¥' + ((o.total_amount||0)).toFixed(2) + '</span>' +
+            '</div>' +
+          '</div>';
+        });
+      }
+      $('historyList').innerHTML = html;
+    });
+  }
+
+  function loadStats() {
+    api('/rider/stats').then(function(json) {
+      $('myToday').textContent = json.data.today_count || 0;
+      $('myWeek').textContent = json.data.week_count || 0;
+    });
+  }
+
+  function startDelivery(id) {
+    pendingAction = {id: id, action: 'start'};
+    $('modalText').textContent = '确认开始配送？';
+    $('confirmModal').classList.add('show');
+  }
+
+  function arriveDelivery(id) {
+    api('/rider/order/arrive', 'POST', {delivery_id: id}).then(function(json) {
+      showToast(json.message || '已到达');
+      loadAll();
+    }).catch(function(e) { showToast(e.message || '操作失败'); });
+  }
+
+  function showConfirm(id, action) {
+    pendingAction = {id: id, action: action};
+    $('modalText').textContent = action === 'complete' ? '确认货物已送达客户手中？' : '确认开始配送？';
+    $('confirmModal').classList.add('show');
+  }
+
+  function hideModal() {
+    $('confirmModal').classList.remove('show');
+    pendingAction = null;
+  }
+
+  function api(url, method, data) {
+    var h = {'Content-Type': 'application/json'};
+    if (authToken) h['Authorization'] = 'Bearer ' + authToken;
+    var opt = {method: method || 'GET', headers: h};
+    if (data && method !== 'GET') opt.body = JSON.stringify(data);
+    var fullUrl = API + url;
+    return fetch(fullUrl, opt).then(function(r) { return r.json(); }).then(function(json) {
+      if (json.code === 401) { authToken = null; localStorage.removeItem('rider_token'); showLogin(); showToast('请重新登录'); throw new Error(json.message); }
+      if (json.code !== 200) throw new Error(json.message || '请求失败');
+      return json;
+    });
+  }
+
+  function showToast(msg) {
+    $('toast').textContent = msg;
+    $('toast').classList.add('show');
+    setTimeout(function() { $('toast').classList.remove('show'); }, 2000);
+  }
+
+  // Init
+  var token = localStorage.getItem('rider_token');
+  var userStr = localStorage.getItem('rider_user');
+  if (token && userStr) {
+    authToken = token;
+    try { currentRider = JSON.parse(userStr); } catch(e) {}
+  }
+  if (authToken && currentRider) { enterMain(); }
+  else { showLogin(); }
+})();
+</script>
+</body>
+</html>
