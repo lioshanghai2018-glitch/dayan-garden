@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 from flask import Flask, send_from_directory, request, jsonify
 from flask_cors import CORS
 from config import Config
@@ -13,6 +13,75 @@ def create_app():
     CORS(app, resources={r"/api/*": {"origins": "*"}})
 
     db.init_app(app)
+
+    # 启动时自动初始化数据库
+    with app.app_context():
+        db.create_all()
+        from database import User, Category, Product, DeliverySlot, Banner, Community, Supplier
+        from datetime import time
+
+        # 如果没有管理员，创建默认管理员
+        if not User.query.filter_by(role='merchant').first():
+            admin = User(openid='admin', nickname='管理员', role='merchant', status=1)
+            db.session.add(admin)
+
+        # 如果没有骑手，创建默认骑手
+        if not User.query.filter_by(role='rider').first():
+            rider = User(openid='rider', nickname='配送员', role='rider', status=1)
+            db.session.add(rider)
+
+        # 如果没有分类，创建默认分类
+        if not Category.query.first():
+            categories_data = [
+                ('叶菜类', 1), ('根茎类', 2), ('瓜果类', 3),
+                ('菌菇类', 4), ('豆制品', 5), ('其他', 6)
+            ]
+            category_ids = {}
+            for name, sort in categories_data:
+                cat = Category(name=name, sort_order=sort)
+                db.session.add(cat)
+                db.session.flush()
+                category_ids[name] = cat.id
+
+            # 创建示例商品
+            products_data = [
+                ('新鲜小白菜', '自家农场直供', 3.5, 4.5, '500g', 100, '叶菜类', '新鲜,有机'),
+                ('菠菜', '富含铁元素', 4.0, 5.0, '500g', 80, '叶菜类', '新鲜'),
+                ('胡萝卜', '橙红脆甜', 2.5, 3.0, '500g', 120, '根茎类', '新鲜'),
+                ('土豆', '黄心土豆', 2.0, 2.5, '500g', 150, '根茎类', '新鲜'),
+                ('番茄', '自然成熟', 4.5, 5.5, '500g', 90, '瓜果类', '新鲜'),
+                ('黄瓜', '清脆爽口', 3.0, 3.8, '500g', 100, '瓜果类', '新鲜'),
+                ('香菇', '香味浓郁', 8.0, 10.0, '300g', 60, '菌菇类', '新鲜'),
+                ('金针菇', '洁白嫩滑', 5.0, 6.5, '300g', 70, '菌菇类', '新鲜'),
+                ('嫩豆腐', '手工制作', 3.0, 3.5, '1盒', 80, '豆制品', '新鲜'),
+                ('鸡蛋', '农家土鸡蛋', 12.0, 15.0, '10个', 50, '其他', '新鲜'),
+            ]
+            for name, subtitle, price, original_price, unit, stock, cat_name, tags in products_data:
+                product = Product(
+                    category_id=category_ids[cat_name],
+                    name=name, subtitle=subtitle, price=price,
+                    original_price=original_price, unit=unit,
+                    stock=stock, tags=tags, status=1
+                )
+                db.session.add(product)
+
+            # 创建配送时间段
+            for name, start, end in [
+                ('08:00-10:00（早间）', time(8,0), time(10,0)),
+                ('11:00-13:00（午间）', time(11,0), time(13,0)),
+                ('15:00-17:00（下午）', time(15,0), time(17,0)),
+            ]:
+                db.session.add(DeliverySlot(name=name, start_time=start, end_time=end, max_orders=20, status=1))
+
+            # 创建轮播图
+            for i, title in enumerate(['新鲜蔬菜 特惠促销', '农家直供 安全保障'], 1):
+                db.session.add(Banner(title=title, image='https://img.yzcdn.cn/vant/cat.jpeg', sort_order=i, status=1))
+
+            # 创建小区
+            for name in ['象山市场小区', '古城花园', '四方广场小区', '幸福里小区', '阳光花园']:
+                db.session.add(Community(name=name, status=1))
+
+        db.session.commit()
 
     # 注册蓝图
     from routes.auth import auth_bp
