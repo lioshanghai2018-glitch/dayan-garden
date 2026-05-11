@@ -61,10 +61,11 @@
     <view class="action-btn secondary" wx:if="{{status === 0}}" bindtap="cancelOrder">取消订单</view>
     <view class="action-btn primary" wx:if="{{status === 0}}" bindtap="payOrder">去支付</view>
 
-    <!-- 待接单：可取消 -->
+    <!-- 待接单：可取消、可申请退款 -->
     <view class="action-btn secondary" wx:if="{{status === 1}}" bindtap="cancelOrder">取消订单</view>
+    <view class="action-btn outline" wx:if="{{status === 1}}" bindtap="showAftersaleModal">申请退款</view>
 
-    <!-- 已接单：不可取消，可申请退款 -->
+    <!-- 已接单：可申请退款 -->
     <view class="action-btn outline" wx:if="{{status === 2}}" bindtap="showAftersaleModal">申请退款</view>
 
     <!-- 配送中：可申请退款 -->

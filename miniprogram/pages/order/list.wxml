@@ -19,7 +19,7 @@
       </view>
       <view class="order-content">
         <view class="order-items-preview">
-          <text wx:for="{{item.items}}" wx:key="*this">{{item.name}}{{item.quantity > 1 ? ' x' + item.quantity : ''}}{{index < item.items.length - 1 ? ', ' : ''}}</text>
+          <text wx:for="{{item.items}}" wx:key="*this" wx:for-item="orderItem">{{orderItem.name}}{{orderItem.quantity > 1 ? ' x' + orderItem.quantity : ''}}{{index < item.items.length - 1 ? ', ' : ''}}</text>
         </view>
         <text class="order-total">共{{item.item_count}}件 合计: ¥{{item.pay_amount}}</text>
       </view>
