@@ -1002,8 +1002,8 @@ async function viewAftersaleDetail(id) {
       const d = res.data;
       let actionsHtml = '<div style="margin-top:20px;padding-top:16px;border-top:1px solid #eee;">';
       if (d.status === 0) {
-        actionsHtml += '<button class="btn-primary" onclick="showHandleAftersaleModal(' + d.id + ', \'approve\')">同意申请</button> ';
-        actionsHtml += '<button class="btn-danger" onclick="showHandleAftersaleModal(' + d.id + ', \'reject\')">拒绝申请</button> ';
+        actionsHtml += '<button class="btn-primary" onclick="handleAftersaleFromDetail(' + d.id + ', \'approve\')">同意申请</button> ';
+        actionsHtml += '<button class="btn-danger" onclick="handleAftersaleFromDetail(' + d.id + ', \'reject\')">拒绝申请</button> ';
       }
       if (d.status === 1) {
         actionsHtml += '<button class="btn-primary" onclick="completeAftersale(' + d.id + ')">确认退款完成</button> ';
@@ -1011,16 +1011,29 @@ async function viewAftersaleDetail(id) {
       actionsHtml += '</div>';
 
       const imagesHtml = d.images && d.images.length > 0
-        ? `<div style="margin-top:8px"><p style="margin-bottom:4px">凭证图片:</p><div style="display:flex;gap:8px">${d.images.map(img => `<img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:4px">`).join('')}</div></div>`
+        ? `<div style="margin-top:8px"><p style="margin-bottom:4px">凭证图片:</p><div style="display:flex;gap:8px">${d.images.map(img => {
+          const fullUrl = img.startsWith('http') ? img : 'https://dayan-garden-production.up.railway.app' + img;
+          return `<img src="${fullUrl}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;cursor:pointer" onclick="window.open('${fullUrl}')">`;
+        }).join('')}</div></div>`
         : '';
+
+      const refundAmountHtml = d.status === 0
+        ? `<div class="order-info-item">
+            <span class="label">退款金额:</span>
+            <span class="value">
+              <span style="color:#FF6B00">¥</span>
+              <input type="number" id="editRefundAmount" data-pay-amount="${d.pay_amount}" value="${d.pay_amount}" style="width:80px;padding:4px;border:1px solid #ddd;border-radius:4px">
+              <span style="margin-left:8px;color:#999">订单金额: ¥${formatPrice(d.pay_amount)}</span>
+            </span>
+           </div>`
+        : (d.refund_amount ? `<div class="order-info-item"><span class="label">退款金额:</span><span class="value" style="color:#FF6B00;font-weight:bold">¥${formatPrice(d.refund_amount)}</span></div>` : '');
 
       const content = `
         <div class="order-info">
           <div class="order-info-item"><span class="label">订单号:</span><span class="value">${d.order_no}</span></div>
           <div class="order-info-item"><span class="label">用户:</span><span class="value">${d.user?.name || '-'}${d.user?.phone ? ' (' + d.user.phone + ')' : ''}</span></div>
           <div class="order-info-item"><span class="label">售后类型:</span><span class="value"><span class="type-tag ${d.type === 1 ? 'type-return' : 'type-refund'}">${d.type_text}</span></span></div>
-          <div class="order-info-item"><span class="label">订单金额:</span><span class="value">¥${formatPrice(d.pay_amount)}</span></div>
-          ${d.refund_amount ? '<div class="order-info-item"><span class="label">退款金额:</span><span class="value" style="color:#FF6B00;font-weight:bold">¥' + formatPrice(d.refund_amount) + '</span></div>' : ''}
+          ${refundAmountHtml}
           <div class="order-info-item"><span class="label">状态:</span><span class="value"><span class="status-tag ${getAftersaleStatusClass(d.status)}">${d.status_text}</span></span></div>
           <div class="order-info-item"><span class="label">申请时间:</span><span class="value">${formatDate(d.created_at)}</span></div>
           <div class="order-info-item"><span class="label">退款原因:</span><span class="value">${d.reason}</span></div>
@@ -1045,15 +1058,25 @@ async function viewAftersaleDetail(id) {
   }
 }
 
-// 显示处理售后弹窗
-function showHandleAftersaleModal(id, action) {
-  const title = action === 'approve' ? '同意售后申请' : '拒绝售后申请';
-  const refundAmount = action === 'approve' ? prompt('请输入退款金额（留空则退全款）:', '') : '';
-  const adminNote = prompt('请输入备注（可选）:', '');
+// 处理售后申请（从详情页直接调用）
+function handleAftersaleFromDetail(id, action) {
+  const refundInput = document.getElementById('editRefundAmount');
+  const refundAmount = refundInput ? parseFloat(refundInput.value) : 0;
+  const payAmount = refundInput ? parseFloat(refundInput.dataset.payAmount) || 999999 : 999999;
 
-  if (action === 'approve' && refundAmount === null) return;
+  // 验证退款金额
+  if (isNaN(refundAmount) || refundAmount <= 0) {
+    alert('请输入正确的退款金额（大于0）');
+    return;
+  }
+  if (refundAmount > payAmount) {
+    alert('退款金额不能大于订单金额');
+    return;
+  }
+
   if (action === 'reject' && !confirm('确认拒绝该售后申请？')) return;
 
+  const adminNote = prompt('请输入备注（可选）:', '');
   handleAftersaleSubmit(id, action, refundAmount, adminNote);
 }
 

@@ -339,8 +339,8 @@ def cancel():
     if not order or order.user_id != user_id:
         return jsonify({'code': 404, 'message': '订单不存在'}), 404
 
-    # 待支付和待接单状态可以直接取消
-    if order.status not in [0, 1]:
+    # 付款后可以取消（状态1-5），已完成或已取消的不能取消
+    if order.status not in [1, 2, 3, 4, 5]:
         return jsonify({'code': 400, 'message': f'当前状态无法取消：{ORDER_STATUS.get(order.status)}'}), 400
 
     order.status = 7
@@ -463,8 +463,8 @@ def aftersale_apply():
     if not order or order.user_id != user_id:
         return jsonify({'code': 404, 'message': '订单不存在'}), 404
 
-    # 只有已支付且未完成的订单可以申请售后
-    if order.status not in [3, 4, 5, 6]:
+    # 只有已支付且未取消/退款的订单可以申请售后
+    if order.status not in [1, 2, 3, 4, 5, 6]:
         return jsonify({'code': 400, 'message': f'当前状态({ORDER_STATUS.get(order.status)})无法申请售后'}), 400
 
     # 检查是否已有待处理的售后申请

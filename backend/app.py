@@ -114,12 +114,33 @@ def create_app():
         file = request.files['image']
         if file.filename == '':
             return jsonify({'code': 400, 'message': '没有选择文件'}), 400
+
+        # 读取文件内容，转换为 base64 用于存储/传输
         import uuid
+        import base64
         ext = file.filename.rsplit('.', 1)[-1].lower() if '.' in file.filename else 'jpg'
         filename = uuid.uuid4().hex + '.' + ext
         file_path = os.path.join(upload_dir, filename)
-        file.save(file_path)
-        return jsonify({'code': 200, 'data': {'url': '/uploads/' + filename}})
+
+        try:
+            file.save(file_path)
+            # 读取文件并转为 base64
+            with open(file_path, 'rb') as f:
+                file_data = base64.b64encode(f.read()).decode('utf-8')
+            mime_type = f'image/{ext}' if ext in ['jpg', 'jpeg', 'png', 'gif', 'webp'] else 'application/octet-stream'
+            data_url = f'data:{mime_type};base64,{file_data}'
+            return jsonify({'code': 200, 'data': {'url': data_url}})
+        except Exception as e:
+            # 如果文件操作失败，返回错误
+            return jsonify({'code': 500, 'message': f'上传失败: {str(e)}'}), 500
+
+    # 提供上传文件的访问（通过API路由读取文件）
+    @app.route('/api/uploads/<path:filename>')
+    def api_serve_upload(filename):
+        file_path = os.path.join('static/uploads', filename)
+        if os.path.exists(file_path):
+            return send_from_directory('static/uploads', filename)
+        return jsonify({'error': 'file not found'}), 404
 
     @app.route('/api/health')
     def health():

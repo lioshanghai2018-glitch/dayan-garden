@@ -33,6 +33,7 @@ Page({
   loadOrderDetail(orderId) {
     API.getOrderDetail(orderId).then(res => {
       const data = res.data;
+      console.log('[DEBUG] order detail loaded, status:', data.status, 'statusText:', data.status_text);
       this.setData({
         status: data.status,
         statusText: data.status_text,
@@ -136,6 +137,7 @@ Page({
   // ========== 售后相关 ==========
 
   showAftersaleModal() {
+    console.log('[DEBUG] showAftersaleModal called, current status:', this.data.status);
     this.setData({
       showAftersaleModal: true,
       aftersaleType: 1,
@@ -153,8 +155,10 @@ Page({
   },
 
   selectAftersaleType(e) {
-    const type = e.currentTarget.dataset.type;
+    const type = parseInt(e.currentTarget.dataset.type);
+    console.log('[DEBUG] selectAftersaleType called, type:', type, 'current aftersaleType:', this.data.aftersaleType);
     this.setData({ aftersaleType: type });
+    console.log('[DEBUG] after setData, aftersaleType:', this.data.aftersaleType);
   },
 
   inputReason(e) {
