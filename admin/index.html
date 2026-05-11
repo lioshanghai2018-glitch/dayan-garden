@@ -40,6 +40,9 @@
           <a href="#" class="nav-item" data-page="orders">
             <span class="nav-icon">📋</span>订单管理
           </a>
+          <a href="#" class="nav-item" data-page="aftersales">
+            <span class="nav-icon">🔄</span>售后管理
+          </a>
           <a href="#" class="nav-item" data-page="riders">
             <span class="nav-icon">🚴</span>骑手管理
           </a>
@@ -203,6 +206,38 @@
             </thead>
             <tbody id="riderTableBody"></tbody>
           </table>
+        </div>
+
+        <!-- 售后管理 -->
+        <div class="page hidden" id="page-aftersales">
+          <div class="page-header">
+            <h1>售后管理</h1>
+          </div>
+          <div class="filter-bar">
+            <select id="aftersaleStatusFilter" onchange="loadAftersales()">
+              <option value="">全部状态</option>
+              <option value="0">待处理</option>
+              <option value="1">已同意</option>
+              <option value="2">已拒绝</option>
+              <option value="3">退款完成</option>
+            </select>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>订单号</th>
+                <th>用户</th>
+                <th>类型</th>
+                <th>原因</th>
+                <th>订单金额</th>
+                <th>状态</th>
+                <th>时间</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="aftersaleTableBody"></tbody>
+          </table>
+          <div class="pagination" id="aftersalePagination"></div>
         </div>
 
         <!-- 分类管理 -->

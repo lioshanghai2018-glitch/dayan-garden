@@ -188,3 +188,19 @@ class Notification(db.Model):
     type = db.Column(db.String(20), default='system')
     status = db.Column(db.Integer, default=1)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+
+class AfterSale(db.Model):
+    """售后申请表"""
+    __tablename__ = 'aftersales'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    order_id = db.Column(db.Integer, db.ForeignKey('orders.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    type = db.Column(db.Integer, nullable=False, default=1)  # 1=退货退款, 2=仅退款
+    reason = db.Column(db.String(500), nullable=False)
+    images = db.Column(db.Text)  # JSON数组，存储图片URL
+    refund_amount = db.Column(db.Numeric(10, 2))  # 商家设定的退款金额
+    status = db.Column(db.Integer, nullable=False, default=0)  # 0=待处理, 1=商家已同意, 2=商家已拒绝, 3=退款完成
+    admin_note = db.Column(db.String(500))  # 商家备注
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)

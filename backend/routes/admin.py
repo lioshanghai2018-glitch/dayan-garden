@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, g
 from functools import wraps
 import jwt
 import os
+import json
 
 admin_bp = Blueprint('admin', __name__)
 
@@ -908,3 +909,200 @@ def dashboard():
         'total_riders': total_riders,
         'pending_orders': pending_orders
     }})
+
+
+# ==================== 售后管理 ====================
+
+@admin_bp.route('/aftersale/list', methods=['GET'])
+def aftersale_list():
+    """获取售后申请列表"""
+    admin = check_admin()
+    if not admin:
+        return jsonify({'code': 403, 'message': '权限不足'}), 403
+
+    from database import db, Order, AfterSale, User, OrderItem
+    page = request.args.get('page', 1, type=int)
+    page_size = request.args.get('page_size', 20, type=int)
+    status = request.args.get('status', type=int)
+
+    query = AfterSale.query
+    if status is not None:
+        query = query.filter_by(status=status)
+
+    pagination = query.order_by(AfterSale.created_at.desc()).paginate(page=page, per_page=page_size, error_out=False)
+
+    result = []
+    for a in pagination.items:
+        order = Order.query.get(a.order_id)
+        user = User.query.get(a.user_id) if a.user_id else None
+        items = OrderItem.query.filter_by(order_id=a.order_id).all() if order else []
+        item_names = '、'.join([f"{i.product_name}x{i.quantity}" for i in items[:3]])
+        if len(items) > 3:
+            item_names += f' 等{len(items)}件'
+
+        result.append({
+            'id': a.id,
+            'order_id': a.order_id,
+            'order_no': order.order_no if order else '',
+            'user_name': user.nickname if user else '',
+            'user_phone': user.phone if user else '',
+            'type': a.type,
+            'type_text': '退货退款' if a.type == 1 else '仅退款',
+            'reason': a.reason,
+            'images': json.loads(a.images) if a.images else [],
+            'refund_amount': float(a.refund_amount) if a.refund_amount else None,
+            'pay_amount': float(order.pay_amount) if order else 0,
+            'status': a.status,
+            'status_text': ['待处理', '已同意', '已拒绝', '退款完成'][a.status] if a.status in [0,1,2,3] else '未知',
+            'admin_note': a.admin_note,
+            'item_names': item_names,
+            'created_at': a.created_at.strftime('%Y-%m-%d %H:%M')
+        })
+
+    return jsonify({'code': 200, 'data': {
+        'list': result,
+        'total': pagination.total,
+        'pages': pagination.pages
+    }})
+
+
+@admin_bp.route('/aftersale/detail/<int:aftersale_id>', methods=['GET'])
+def aftersale_detail(aftersale_id):
+    """获取售后详情"""
+    admin = check_admin()
+    if not admin:
+        return jsonify({'code': 403, 'message': '权限不足'}), 403
+
+    from database import db, Order, AfterSale, User, OrderItem, Address
+    aftersale = AfterSale.query.get(aftersale_id)
+    if not aftersale:
+        return jsonify({'code': 404, 'message': '售后记录不存在'}), 404
+
+    order = Order.query.get(aftersale.order_id)
+    user = User.query.get(aftersale.user_id)
+    items = OrderItem.query.filter_by(order_id=order.id).all() if order else []
+    address = Address.query.get(order.address_id) if order else None
+
+    return jsonify({'code': 200, 'data': {
+        'id': aftersale.id,
+        'order_id': aftersale.order_id,
+        'order_no': order.order_no if order else '',
+        'user': {'name': user.nickname, 'phone': user.phone} if user else None,
+        'type': aftersale.type,
+        'type_text': '退货退款' if aftersale.type == 1 else '仅退款',
+        'reason': aftersale.reason,
+        'images': json.loads(aftersale.images) if aftersale.images else [],
+        'refund_amount': float(aftersale.refund_amount) if aftersale.refund_amount else None,
+        'pay_amount': float(order.pay_amount) if order else 0,
+        'status': aftersale.status,
+        'status_text': ['待处理', '已同意', '已拒绝', '退款完成'][aftersale.status] if aftersale.status in [0,1,2,3] else '未知',
+        'admin_note': aftersale.admin_note,
+        'items': [{'name': i.product_name, 'quantity': i.quantity, 'price': float(i.price)} for i in items],
+        'address': {'name': address.name, 'phone': address.phone, 'detail': f"{address.community} {address.building} {address.room}"} if address else None,
+        'created_at': aftersale.created_at.strftime('%Y-%m-%d %H:%M')
+    }})
+
+
+@admin_bp.route('/aftersale/handle', methods=['POST'])
+def aftersale_handle():
+    """处理售后申请（同意/拒绝/设定退款金额）"""
+    admin = check_admin()
+    if not admin:
+        return jsonify({'code': 403, 'message': '权限不足'}), 403
+
+    from database import db, Order, AfterSale
+    from datetime import datetime
+    data = request.get_json()
+    aftersale_id = data.get('aftersale_id')
+    action = data.get('action')  # approve=同意, reject=拒绝
+    refund_amount = data.get('refund_amount')  # 退款金额
+    admin_note = data.get('admin_note', '')
+
+    if not aftersale_id or not action:
+        return jsonify({'code': 400, 'message': '缺少必要参数'}), 400
+
+    aftersale = AfterSale.query.get(aftersale_id)
+    if not aftersale:
+        return jsonify({'code': 404, 'message': '售后记录不存在'}), 404
+
+    if aftersale.status != 0:
+        return jsonify({'code': 400, 'message': '该售后申请已处理'}), 400
+
+    order = Order.query.get(aftersale.order_id)
+    if not order:
+        return jsonify({'code': 404, 'message': '关联订单不存在'}), 404
+
+    if action == 'approve':
+        if refund_amount is not None:
+            aftersale.refund_amount = refund_amount
+        else:
+            aftersale.refund_amount = order.pay_amount  # 默认退全款
+        aftersale.status = 1  # 已同意
+        aftersale.admin_note = admin_note
+        # 订单状态不变，等退款完成后再改
+    elif action == 'reject':
+        aftersale.status = 2  # 已拒绝
+        aftersale.admin_note = admin_note
+        # 恢复订单状态为原状态（从退款中改回）
+        if order.status == 8:
+            # 根据配送状态恢复
+            delivery = Delivery.query.filter_by(order_id=order.id).first()
+            if delivery:
+                if delivery.status >= 5:
+                    order.status = 6  # 已完成
+                elif delivery.status >= 3:
+                    order.status = 4  # 配送中
+                else:
+                    order.status = 2  # 已接单
+            else:
+                order.status = 2
+    else:
+        return jsonify({'code': 400, 'message': '无效的操作'}), 400
+
+    db.session.commit()
+    return jsonify({'code': 200, 'message': '处理成功'})
+
+
+@admin_bp.route('/aftersale/complete', methods=['POST'])
+def aftersale_complete():
+    """确认退款完成"""
+    admin = check_admin()
+    if not admin:
+        return jsonify({'code': 403, 'message': '权限不足'}), 403
+
+    from database import db, Order, AfterSale, Delivery
+    from datetime import datetime
+    data = request.get_json()
+    aftersale_id = data.get('aftersale_id')
+
+    if not aftersale_id:
+        return jsonify({'code': 400, 'message': '缺少aftersale_id'}), 400
+
+    aftersale = AfterSale.query.get(aftersale_id)
+    if not aftersale:
+        return jsonify({'code': 404, 'message': '售后记录不存在'}), 404
+
+    if aftersale.status != 1:
+        return jsonify({'code': 400, 'message': '只能确认已同意的售后'}), 400
+
+    order = Order.query.get(aftersale.order_id)
+    if not order:
+        return jsonify({'code': 404, 'message': '关联订单不存在'}), 404
+
+    # 更新售后状态为已完成
+    aftersale.status = 3  # 退款完成
+
+    # 更新订单状态为已退款
+    order.status = 9  # 已退款
+
+    # 如果是退货退款，释放库存
+    if aftersale.type == 1:  # 退货退款
+        from database import OrderItem, Product
+        items = OrderItem.query.filter_by(order_id=order.id).all()
+        for item in items:
+            product = Product.query.get(item.product_id)
+            if product:
+                product.stock += item.quantity
+
+    db.session.commit()
+    return jsonify({'code': 200, 'message': '退款已完成'})

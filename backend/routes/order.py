@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify, g
 from functools import wraps
 from datetime import datetime, timedelta
 import random
+import json
 
 order_bp = Blueprint('order', __name__)
 
@@ -435,3 +436,127 @@ def refund():
 
     db.session.commit()
     return jsonify({'code': 200, 'message': '退款申请已提交'})
+
+
+# ==================== 售后申请 ====================
+
+@order_bp.route('/aftersale/apply', methods=['POST'])
+def aftersale_apply():
+    """申请售后（退货退款或仅退款）"""
+    from database import db, Order, AfterSale
+    user_id = get_user_id()
+    if not user_id:
+        return jsonify({'code': 401, 'message': '请先登录'}), 401
+
+    data = request.get_json()
+    order_id = data.get('order_id')
+    aftersale_type = data.get('type', 1)  # 1=退货退款, 2=仅退款
+    reason = data.get('reason', '')
+    images = data.get('images', [])  # 图片URL数组
+
+    if not order_id:
+        return jsonify({'code': 400, 'message': '缺少order_id'}), 400
+    if not reason:
+        return jsonify({'code': 400, 'message': '请填写退款原因'}), 400
+
+    order = Order.query.get(order_id)
+    if not order or order.user_id != user_id:
+        return jsonify({'code': 404, 'message': '订单不存在'}), 404
+
+    # 只有已支付且未完成的订单可以申请售后
+    if order.status not in [3, 4, 5, 6]:
+        return jsonify({'code': 400, 'message': f'当前状态({ORDER_STATUS.get(order.status)})无法申请售后'}), 400
+
+    # 检查是否已有待处理的售后申请
+    existing = AfterSale.query.filter_by(order_id=order_id, status=0).first()
+    if existing:
+        return jsonify({'code': 400, 'message': '该订单已有待处理的售后申请'}), 400
+
+    aftersale = AfterSale(
+        order_id=order_id,
+        user_id=user_id,
+        type=aftersale_type,
+        reason=reason,
+        images=json.dumps(images) if images else None,
+        status=0
+    )
+    db.session.add(aftersale)
+
+    # 更新订单状态为退款中
+    order.status = 8
+    order.cancel_reason = reason
+
+    db.session.commit()
+    return jsonify({'code': 200, 'message': '售后申请已提交'})
+
+
+@order_bp.route('/aftersale/list', methods=['GET'])
+def aftersale_list():
+    """获取用户的售后记录"""
+    from database import db, Order, AfterSale
+    user_id = get_user_id()
+    if not user_id:
+        return jsonify({'code': 401, 'message': '请先登录'}), 401
+
+    page = request.args.get('page', 1, type=int)
+    page_size = request.args.get('page_size', 10, type=int)
+
+    pagination = AfterSale.query.filter_by(user_id=user_id).order_by(
+        AfterSale.created_at.desc()
+    ).paginate(page=page, per_page=page_size, error_out=False)
+
+    result = []
+    for a in pagination.items:
+        order = Order.query.get(a.order_id)
+        result.append({
+            'id': a.id,
+            'order_id': a.order_id,
+            'order_no': order.order_no if order else '',
+            'type': a.type,
+            'type_text': '退货退款' if a.type == 1 else '仅退款',
+            'reason': a.reason,
+            'images': json.loads(a.images) if a.images else [],
+            'refund_amount': float(a.refund_amount) if a.refund_amount else None,
+            'status': a.status,
+            'status_text': ['待处理', '已同意', '已拒绝', '退款完成'][a.status] if a.status in [0,1,2,3] else '未知',
+            'admin_note': a.admin_note,
+            'created_at': a.created_at.strftime('%Y-%m-%d %H:%M')
+        })
+
+    return jsonify({'code': 200, 'data': {
+        'list': result,
+        'total': pagination.total,
+        'pages': pagination.pages
+    }})
+
+
+@order_bp.route('/aftersale/detail/<int:aftersale_id>', methods=['GET'])
+def aftersale_detail(aftersale_id):
+    """获取售后详情"""
+    from database import db, Order, AfterSale, OrderItem
+    user_id = get_user_id()
+    if not user_id:
+        return jsonify({'code': 401, 'message': '请先登录'}), 401
+
+    aftersale = AfterSale.query.get(aftersale_id)
+    if not aftersale or aftersale.user_id != user_id:
+        return jsonify({'code': 404, 'message': '售后记录不存在'}), 404
+
+    order = Order.query.get(aftersale.order_id)
+    items = OrderItem.query.filter_by(order_id=order.id).all() if order else []
+
+    return jsonify({'code': 200, 'data': {
+        'id': aftersale.id,
+        'order_id': aftersale.order_id,
+        'order_no': order.order_no if order else '',
+        'type': aftersale.type,
+        'type_text': '退货退款' if aftersale.type == 1 else '仅退款',
+        'reason': aftersale.reason,
+        'images': json.loads(aftersale.images) if aftersale.images else [],
+        'refund_amount': float(aftersale.refund_amount) if aftersale.refund_amount else None,
+        'status': aftersale.status,
+        'status_text': ['待处理', '已同意', '已拒绝', '退款完成'][aftersale.status] if aftersale.status in [0,1,2,3] else '未知',
+        'admin_note': aftersale.admin_note,
+        'created_at': aftersale.created_at.strftime('%Y-%m-%d %H:%M'),
+        'items': [{'name': i.product_name, 'quantity': i.quantity} for i in items]
+    }})

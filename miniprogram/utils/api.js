@@ -161,5 +161,14 @@ module.exports = {
   getDeliverySlotsAdmin: () => request('/admin/delivery/slots'),
   getDashboard: () => request('/admin/dashboard'),
   adminCategoryList: () => request('/admin/category/list'),
-  adminBannerList: () => request('/admin/banner/list')
+  adminBannerList: () => request('/admin/banner/list'),
+
+  // 售后
+  aftersaleApply: (orderId, type, reason, images) => request('/order/aftersale/apply', 'POST', { order_id: orderId, type, reason, images }),
+  aftersaleList: (params) => request('/order/aftersale/list', 'GET', params),
+  aftersaleDetail: (id) => request('/order/aftersale/detail/' + id),
+  adminAftersaleList: (params) => request('/admin/aftersale/list', 'GET', params),
+  adminAftersaleDetail: (id) => request('/admin/aftersale/detail/' + id),
+  adminAftersaleHandle: (aftersaleId, action, refundAmount, adminNote) => request('/admin/aftersale/handle', 'POST', { aftersale_id: aftersaleId, action, refund_amount: refundAmount, admin_note: adminNote }),
+  adminAftersaleComplete: (aftersaleId) => request('/admin/aftersale/complete', 'POST', { aftersale_id: aftersaleId })
 };

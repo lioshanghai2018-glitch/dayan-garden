@@ -125,6 +125,9 @@ async function loadPageData(page) {
     case 'orders':
       await loadOrders();
       break;
+    case 'aftersales':
+      await loadAftersales();
+      break;
     case 'riders':
       await loadRiders();
       break;

@@ -480,6 +480,16 @@ body {
 .status-success { background: #F6FFED; color: #52C41A; }
 .status-error { background: #FFF1F0; color: #F5222D; }
 
+/* 售后类型标签 */
+.type-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.type-return { background: #F6FFED; color: #52C41A; }
+.type-refund { background: #E3F2FD; color: #1890FF; }
+
 /* 响应式 */
 @media (max-width: 768px) {
   .sidebar { display: none; }

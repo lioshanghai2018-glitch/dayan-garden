@@ -935,3 +935,167 @@ async function handleImageUpload(fileInput, targetInputId) {
     alert('上传失败');
   }
 }
+
+// ========== 售后管理 ==========
+
+// 加载售后列表
+async function loadAftersales(page = 1) {
+  try {
+    const status = document.getElementById('aftersaleStatusFilter')?.value;
+    const params = { page, page_size: 10 };
+    if (status) params.status = status;
+
+    const res = await request('/admin/aftersale/list', 'GET', params);
+    if (res.code === 200) {
+      renderAftersaleTable(res.data.list);
+      renderPagination('aftersalePagination', page, res.data.pages, loadAftersales);
+    }
+  } catch (err) {
+    console.error('Load aftersales error:', err);
+  }
+}
+
+// 渲染售后表格
+function renderAftersaleTable(aftersales) {
+  const tbody = document.getElementById('aftersaleTableBody');
+  if (!aftersales || aftersales.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:#999">暂无数据</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = aftersales.map(a => `
+    <tr>
+      <td>${a.order_no}</td>
+      <td>${a.user_name || '-'}</td>
+      <td><span class="type-tag ${a.type === 1 ? 'type-return' : 'type-refund'}">${a.type_text}</span></td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${a.reason}">${a.reason}</td>
+      <td>¥${formatPrice(a.pay_amount)}</td>
+      <td><span class="status-tag ${getAftersaleStatusClass(a.status)}">${a.status_text}</span></td>
+      <td>${formatDate(a.created_at)}</td>
+      <td>
+        <div class="actions">
+          <button class="action-btn" onclick="viewAftersaleDetail(${a.id})">详情</button>
+          ${a.status === 0 ? '<button class="action-btn" onclick="handleAftersale(' + a.id + ', \'approve\')">同意</button><button class="action-btn btn-danger" onclick="handleAftersale(' + a.id + ', \'reject\')">拒绝</button>' : ''}
+          ${a.status === 1 ? '<button class="action-btn" onclick="completeAftersale(' + a.id + ')">确认退款</button>' : ''}
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// 获取售后状态样式
+function getAftersaleStatusClass(status) {
+  const classes = {
+    0: 'status-pending',
+    1: 'status-process',
+    2: 'status-error',
+    3: 'status-success'
+  };
+  return classes[status] || '';
+}
+
+// 查看售后详情
+async function viewAftersaleDetail(id) {
+  try {
+    const res = await request('/admin/aftersale/detail/' + id);
+    if (res.code === 200) {
+      const d = res.data;
+      let actionsHtml = '<div style="margin-top:20px;padding-top:16px;border-top:1px solid #eee;">';
+      if (d.status === 0) {
+        actionsHtml += '<button class="btn-primary" onclick="showHandleAftersaleModal(' + d.id + ', \'approve\')">同意申请</button> ';
+        actionsHtml += '<button class="btn-danger" onclick="showHandleAftersaleModal(' + d.id + ', \'reject\')">拒绝申请</button> ';
+      }
+      if (d.status === 1) {
+        actionsHtml += '<button class="btn-primary" onclick="completeAftersale(' + d.id + ')">确认退款完成</button> ';
+      }
+      actionsHtml += '</div>';
+
+      const imagesHtml = d.images && d.images.length > 0
+        ? `<div style="margin-top:8px"><p style="margin-bottom:4px">凭证图片:</p><div style="display:flex;gap:8px">${d.images.map(img => `<img src="${img}" style="width:60px;height:60px;object-fit:cover;border-radius:4px">`).join('')}</div></div>`
+        : '';
+
+      const content = `
+        <div class="order-info">
+          <div class="order-info-item"><span class="label">订单号:</span><span class="value">${d.order_no}</span></div>
+          <div class="order-info-item"><span class="label">用户:</span><span class="value">${d.user?.name || '-'}${d.user?.phone ? ' (' + d.user.phone + ')' : ''}</span></div>
+          <div class="order-info-item"><span class="label">售后类型:</span><span class="value"><span class="type-tag ${d.type === 1 ? 'type-return' : 'type-refund'}">${d.type_text}</span></span></div>
+          <div class="order-info-item"><span class="label">订单金额:</span><span class="value">¥${formatPrice(d.pay_amount)}</span></div>
+          ${d.refund_amount ? '<div class="order-info-item"><span class="label">退款金额:</span><span class="value" style="color:#FF6B00;font-weight:bold">¥' + formatPrice(d.refund_amount) + '</span></div>' : ''}
+          <div class="order-info-item"><span class="label">状态:</span><span class="value"><span class="status-tag ${getAftersaleStatusClass(d.status)}">${d.status_text}</span></span></div>
+          <div class="order-info-item"><span class="label">申请时间:</span><span class="value">${formatDate(d.created_at)}</span></div>
+          <div class="order-info-item"><span class="label">退款原因:</span><span class="value">${d.reason}</span></div>
+          ${imagesHtml}
+          ${d.admin_note ? '<div class="order-info-item"><span class="label">商家备注:</span><span class="value">' + d.admin_note + '</span></div>' : ''}
+        </div>
+        <h4 style="margin: 16px 0 8px">商品明细:</h4>
+        <table class="data-table">
+          <thead><tr><th>商品</th><th>数量</th></tr></thead>
+          <tbody>
+            ${d.items.map(item => `<tr><td>${item.name}</td><td>${item.quantity}</td></tr>`).join('')}
+          </tbody>
+        </table>
+        ${d.address ? '<p style="margin-top:16px">收货地址: ' + d.address.name + ' ' + d.address.phone + '<br>' + d.address.detail + '</p>' : ''}
+        ${actionsHtml}
+      `;
+      document.getElementById('orderDetailContent').innerHTML = content;
+      document.getElementById('orderDetailModal').classList.remove('hidden');
+    }
+  } catch (err) {
+    alert('加载失败');
+  }
+}
+
+// 显示处理售后弹窗
+function showHandleAftersaleModal(id, action) {
+  const title = action === 'approve' ? '同意售后申请' : '拒绝售后申请';
+  const refundAmount = action === 'approve' ? prompt('请输入退款金额（留空则退全款）:', '') : '';
+  const adminNote = prompt('请输入备注（可选）:', '');
+
+  if (action === 'approve' && refundAmount === null) return;
+  if (action === 'reject' && !confirm('确认拒绝该售后申请？')) return;
+
+  handleAftersaleSubmit(id, action, refundAmount, adminNote);
+}
+
+// 处理售后申请
+async function handleAftersaleSubmit(id, action, refundAmount, adminNote) {
+  try {
+    const data = {
+      aftersale_id: id,
+      action: action,
+      admin_note: adminNote || ''
+    };
+    if (action === 'approve' && refundAmount) {
+      data.refund_amount = parseFloat(refundAmount);
+    }
+
+    const res = await request('/admin/aftersale/handle', 'POST', data);
+    if (res.code === 200) {
+      alert('处理成功');
+      closeModal('orderDetailModal');
+      loadAftersales();
+    } else {
+      alert(res.message || '处理失败');
+    }
+  } catch (err) {
+    alert('处理失败');
+  }
+}
+
+// 确认退款完成
+async function completeAftersale(id) {
+  if (!confirm('确认退款已完成？')) return;
+
+  try {
+    const res = await request('/admin/aftersale/complete', 'POST', { aftersale_id: id });
+    if (res.code === 200) {
+      alert('退款已完成');
+      closeModal('orderDetailModal');
+      loadAftersales();
+    } else {
+      alert(res.message || '操作失败');
+    }
+  } catch (err) {
+    alert('操作失败');
+  }
+}
